@@ -1,0 +1,118 @@
+<section class="contact-section" id="contact">
+  <div class="page-header-bg" style="position: absolute; inset: 0; pointer-events: none;">
+    <div class="glow glow-red" style="top: -10%; left: -5%;"></div>
+    <div class="glow glow-red" style="bottom: -10%; right: -5%;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Contact</span>
+      <h1 class="section-title"><%= settings && settings.contact_heading ? settings.contact_heading : "Let's Work Together" %></h1>
+      <p class="section-subtitle" style="margin: 0 auto;"><%= settings && settings.contact_subheading ? settings.contact_subheading : 'Have a project in mind? Let\'s create something exceptional.' %></p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="reveal-left">
+          <div class="contact-item">
+            <div class="contact-item-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <h4>Phone</h4>
+              <p><%= settings && settings.contact_phone ? settings.contact_phone : '+254 700 000 000' %></p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-left">
+          <div class="contact-item">
+            <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <h4>Email</h4>
+              <p><%= settings && settings.contact_email ? settings.contact_email : 'hello@ngure.dev' %></p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-left">
+          <div class="contact-item">
+            <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <h4>Location</h4>
+              <p><%= settings && settings.location ? settings.location : 'Nairobi, Kenya' %></p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-left">
+          <div class="contact-item">
+            <div class="contact-item-icon"><i class="fab fa-whatsapp"></i></div>
+            <div>
+              <h4>WhatsApp</h4>
+              <p><%= settings && settings.whatsapp ? settings.whatsapp : '+254 700 000 000' %></p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-left" style="margin-top: 16px;">
+          <h4 style="font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px;">Follow Me</h4>
+          <div class="contact-social">
+            <a href="<%= settings && settings.github_url ? settings.github_url : 'https://github.com/ngure' %>" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="<%= settings && settings.linkedin_url ? settings.linkedin_url : 'https://linkedin.com/in/ngure' %>" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="<%= settings && settings.instagram_url ? settings.instagram_url : 'https://instagram.com/ngure' %>" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="<%= settings && settings.youtube_url ? settings.youtube_url : 'https://youtube.com/@ngure' %>" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="<%= settings && settings.tiktok_url ? settings.tiktok_url : 'https://tiktok.com/@ngure' %>" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <form class="contact-form" action="/contact" method="POST">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="+254 700 000 000">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="projectType">Project Type</label>
+              <select id="projectType" name="projectType">
+                <option value="">Select project type</option>
+                <option value="Software Development">Software Development</option>
+                <option value="Cinematography">Cinematography</option>
+                <option value="Videography">Videography</option>
+                <option value="Photography">Photography</option>
+                <option value="Video Editing">Video Editing</option>
+                <option value="Drone Videography">Drone Videography</option>
+                <option value="Full Production">Full Production</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget">Budget Range</label>
+              <select id="budget" name="budget">
+                <option value="">Select budget</option>
+                <option value="Under $1,000">Under $1,000</option>
+                <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                <option value="$25,000+">$25,000+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="timeline">Timeline</label>
+            <input type="text" id="timeline" name="timeline" placeholder="e.g., Within 1 month, Flexible, etc.">
+          </div>
+          <div class="form-group">
+            <label for="description">Project Description *</label>
+            <textarea id="description" name="description" placeholder="Tell me about your project, goals, and any specific requirements..." required></textarea>
+          </div>
+          <button type="submit">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

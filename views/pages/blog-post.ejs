@@ -1,0 +1,67 @@
+<section class="blog-post-hero">
+  <div class="page-header-bg">
+    <div class="glow glow-red" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal"><%= post.category %></span>
+    <h1 class="reveal"><%= post.title %></h1>
+    <div class="blog-post-meta reveal">
+      <span><i class="far fa-calendar"></i> <%= new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %></span>
+      <span><i class="far fa-folder"></i> <%= post.category %></span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div style="max-width: 800px; margin: 0 auto;">
+    <div class="reveal" style="width: 100%; aspect-ratio: 16/9; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 3rem; margin-bottom: 40px;">
+      <i class="fas fa-newspaper"></i>
+    </div>
+  </div>
+</div>
+
+<div class="blog-post-body reveal">
+  <%- post.content %>
+</div>
+
+<div class="container" style="padding-bottom: 60px;">
+  <div style="max-width: 800px; margin: 0 auto;">
+    <% if (post.tags) { %>
+      <div class="project-tech-grid" style="margin-bottom: 40px;">
+        <% var tags = post.tags.split(',').map(t => t.trim()); %>
+        <% tags.forEach(function(tag) { %>
+          <span class="project-tech-tag">#<%= tag %></span>
+        <% }); %>
+      </div>
+    <% } %>
+    <div style="border-top: 1px solid var(--border); padding-top: 40px; display: flex; justify-content: space-between;">
+      <a href="/blog" class="btn-outline"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+    </div>
+  </div>
+</div>
+
+<% if (related && related.length > 0) { %>
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Related</span>
+      <h2 class="section-title reveal">More Articles</h2>
+    </div>
+    <div class="blog-grid">
+      <% related.forEach(function(p) { %>
+        <a href="/blog/<%= p.slug %>" class="blog-card reveal">
+          <div class="blog-card-image">
+            <div class="card-image-placeholder"><i class="fas fa-newspaper"></i></div>
+          </div>
+          <div class="blog-card-content">
+            <span class="blog-card-category"><%= p.category %></span>
+            <h3><%= p.title %></h3>
+            <p><%= p.excerpt.substring(0, 100) %>...</p>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>

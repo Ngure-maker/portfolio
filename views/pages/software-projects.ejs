@@ -1,0 +1,60 @@
+<section class="page-header">
+  <div class="page-header-bg">
+    <% if (settings && settings.software_bg_media) { %>
+      <% if (settings.software_bg_media.match(/\.(mp4|webm)$/i)) { %>
+        <video class="page-header-bg-media" src="<%= settings.software_bg_media %>" autoplay muted loop playsinline></video>
+      <% } else { %>
+        <img class="page-header-bg-media" src="<%= settings.software_bg_media %>" alt="">
+      <% } %>
+      <div class="page-header-bg-overlay"></div>
+    <% } %>
+    <div class="glow glow-red" style="top: -20%; right: -10%;"></div>
+    <div class="glow glow-white" style="bottom: -20%; left: -10%; opacity: 0.05;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">Projects</span>
+    <h1 class="reveal">Software Projects</h1>
+    <p class="reveal">Case studies and deep dives into applications I've built.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (projects && projects.length > 0) { %>
+      <div class="featured-grid">
+        <% projects.forEach(function(project) { %>
+          <a href="/projects/software/<%= project.slug %>" class="featured-card reveal">
+            <div class="featured-card-image">
+              <% if (project.heroImage) { %>
+                <img src="<%= project.heroImage %>" alt="<%= project.title %>">
+              <% } else { %>
+                <div class="card-image-placeholder"><i class="fas fa-code"></i></div>
+              <% } %>
+              <div class="featured-card-overlay">
+                <span>View Case Study <i class="fas fa-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="featured-card-content">
+              <span class="featured-card-category"><%= project.category %></span>
+              <h3><%= project.title %></h3>
+              <p><%= project.description.substring(0, 120) %>...</p>
+              <div class="project-tech-grid" style="margin-top: 16px;">
+                <% var techs = project.techStack ? project.techStack.split(',').slice(0, 3) : []; %>
+                <% techs.forEach(function(tech) { %>
+                  <span class="project-tech-tag" style="font-size: 0.75rem; padding: 4px 12px;"><%= tech.trim() %></span>
+                <% }); %>
+              </div>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state reveal">
+        <i class="fas fa-code"></i>
+        <h3 style="margin-bottom: 12px;">Projects Coming Soon</h3>
+        <p>I'm currently documenting my latest projects. Check back soon!</p>
+      </div>
+    <% } %>
+  </div>
+</section>

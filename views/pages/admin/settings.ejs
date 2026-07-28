@@ -1,0 +1,605 @@
+<%- include('../../partials/admin-header') %>
+<%
+  const s = {};
+  if (typeof settings !== 'undefined' && settings) {
+    settings.forEach(item => { s[item.key] = item.value; });
+  }
+
+%>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <div>
+        <h1>Settings</h1>
+        <p style="margin-top:4px;font-size:0.85rem;color:var(--text-muted);">Site-wide settings and homepage images.</p>
+      </div>
+    </div>
+    <div class="admin-form">
+      <form action="/admin/settings?_method=PUT" method="POST">
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Site Information</h3>
+        <div class="admin-form-group">
+          <label>Site Title</label>
+          <input type="text" name="site_title" value="<%= s.site_title || 'Ngure - Software Engineer & Visual Storyteller' %>">
+        </div>
+        <div class="admin-form-group">
+          <label>Site Description</label>
+          <textarea name="site_description" rows="3"><%= s.site_description || 'Building scalable software while creating cinematic visual experiences.' %></textarea>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Contact Email</label>
+            <input type="email" name="contact_email" value="<%= s.contact_email || 'hello@ngure.dev' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Contact Phone</label>
+            <input type="text" name="contact_phone" value="<%= s.contact_phone || '+254 700 000 000' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Location</label>
+          <input type="text" name="location" value="<%= s.location || 'Nairobi, Kenya' %>">
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin:32px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Homepage Images</h3>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">Upload new images or select from your media library.</p>
+
+        <!-- Hero Portrait Image Picker -->
+        <div class="img-picker">
+          <label class="img-picker-label">Hero Portrait Image</label>
+          <div class="img-picker-preview" id="heroPreview">
+            <% if (s.hero_portrait) { %>
+              <img src="<%= s.hero_portrait %>" alt="Hero portrait">
+              <button type="button" class="img-picker-remove" onclick="clearHeroImage()" title="Remove">&times;</button>
+            <% } else { %>
+              <div class="img-picker-placeholder">
+                <i class="fas fa-user"></i>
+                <span>No image set</span>
+              </div>
+            <% } %>
+          </div>
+          <input type="hidden" name="hero_portrait" id="heroPortraitInput" value="<%= s.hero_portrait || '' %>">
+          <div class="img-picker-actions">
+            <label class="img-picker-upload-btn">
+              <i class="fas fa-upload"></i> Upload New
+              <input type="file" accept="image/*" onchange="uploadHeroImage(this)" style="display:none">
+            </label>
+            <button type="button" class="img-picker-open-btn" onclick="openMediaPicker('hero')">
+              <i class="fas fa-images"></i> Browse Media
+            </button>
+            <button type="button" class="img-picker-url-btn" onclick="showUrlInput('hero')">
+              <i class="fas fa-link"></i> Paste URL
+            </button>
+          </div>
+          <div class="img-picker-url-input" id="heroUrlInput" style="display:none;">
+            <input type="text" placeholder="Paste image URL..." onchange="setHeroImage(this.value)">
+            <button type="button" class="img-picker-url-apply" onclick="setHeroImage(this.previousElementSibling.value)">Apply</button>
+          </div>
+        </div>
+
+        <!-- About Page Image Picker -->
+        <div class="img-picker">
+          <label class="img-picker-label">About Page Image</label>
+          <div class="img-picker-preview" id="aboutPreview">
+            <% if (s.about_image) { %>
+              <img src="<%= s.about_image %>" alt="About image">
+              <button type="button" class="img-picker-remove" onclick="clearAboutImage()" title="Remove">&times;</button>
+            <% } else { %>
+              <div class="img-picker-placeholder">
+                <i class="fas fa-image"></i>
+                <span>No image set</span>
+              </div>
+            <% } %>
+          </div>
+          <input type="hidden" name="about_image" id="aboutImageInput" value="<%= s.about_image || '' %>">
+          <div class="img-picker-actions">
+            <label class="img-picker-upload-btn">
+              <i class="fas fa-upload"></i> Upload New
+              <input type="file" accept="image/*" onchange="uploadAboutImage(this)" style="display:none">
+            </label>
+            <button type="button" class="img-picker-open-btn" onclick="openMediaPicker('about')">
+              <i class="fas fa-images"></i> Browse Media
+            </button>
+            <button type="button" class="img-picker-url-btn" onclick="showUrlInput('about')">
+              <i class="fas fa-link"></i> Paste URL
+            </button>
+          </div>
+          <div class="img-picker-url-input" id="aboutUrlInput" style="display:none;">
+            <input type="text" placeholder="Paste image URL..." onchange="setAboutImage(this.value)">
+            <button type="button" class="img-picker-url-apply" onclick="setAboutImage(this.previousElementSibling.value)">Apply</button>
+          </div>
+        </div>
+
+        <!-- Software Page Background Media -->
+        <div class="img-picker">
+          <label class="img-picker-label">Software Page Background</label>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin:-8px 0 12px;">Background image/video for the software portfolio pages. Videos will autoplay and loop.</p>
+          <div class="img-picker-preview img-picker-preview--rect" id="softwareBgPreview">
+            <% if (s.software_bg_media) { %>
+              <% if (s.software_bg_media.match(/\.(mp4|webm)$/i)) { %>
+                <video src="<%= s.software_bg_media %>" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+              <% } else { %>
+                <img src="<%= s.software_bg_media %>" alt="Software page background">
+              <% } %>
+              <button type="button" class="img-picker-remove" onclick="clearSoftwareBg()" title="Remove">&times;</button>
+            <% } else { %>
+              <div class="img-picker-placeholder">
+                <i class="fas fa-code"></i>
+                <span>No background set</span>
+              </div>
+            <% } %>
+          </div>
+          <input type="hidden" name="software_bg_media" id="softwareBgMediaInput" value="<%= s.software_bg_media || '' %>">
+          <div class="img-picker-actions">
+            <label class="img-picker-upload-btn">
+              <i class="fas fa-upload"></i> Upload New
+              <input type="file" accept="image/*,video/mp4,video/webm" onchange="uploadSoftwareBg(this)" style="display:none">
+            </label>
+            <button type="button" class="img-picker-open-btn" onclick="openMediaPicker('softwarebg')">
+              <i class="fas fa-images"></i> Browse Media
+            </button>
+            <button type="button" class="img-picker-url-btn" onclick="showUrlInput('softwarebg')">
+              <i class="fas fa-link"></i> Paste URL
+            </button>
+          </div>
+          <div class="img-picker-url-input" id="softwarebgUrlInput" style="display:none;">
+            <input type="text" placeholder="Paste image or video URL..." onchange="setSoftwareBg(this.value)">
+            <button type="button" class="img-picker-url-apply" onclick="setSoftwareBg(this.previousElementSibling.value)">Apply</button>
+          </div>
+        </div>
+
+        <!-- Creative Page Background Media -->
+        <div class="img-picker">
+          <label class="img-picker-label">Creative Page Background</label>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin:-8px 0 12px;">Background image/video for the creative portfolio pages. Videos will autoplay and loop.</p>
+          <div class="img-picker-preview img-picker-preview--rect" id="creativeBgPreview">
+            <% if (s.creative_bg_media) { %>
+              <% if (s.creative_bg_media.match(/\.(mp4|webm)$/i)) { %>
+                <video src="<%= s.creative_bg_media %>" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+              <% } else { %>
+                <img src="<%= s.creative_bg_media %>" alt="Creative page background">
+              <% } %>
+              <button type="button" class="img-picker-remove" onclick="clearCreativeBg()" title="Remove">&times;</button>
+            <% } else { %>
+              <div class="img-picker-placeholder">
+                <i class="fas fa-film"></i>
+                <span>No background set</span>
+              </div>
+            <% } %>
+          </div>
+          <input type="hidden" name="creative_bg_media" id="creativeBgMediaInput" value="<%= s.creative_bg_media || '' %>">
+          <div class="img-picker-actions">
+            <label class="img-picker-upload-btn">
+              <i class="fas fa-upload"></i> Upload New
+              <input type="file" accept="image/*,video/mp4,video/webm" onchange="uploadCreativeBg(this)" style="display:none">
+            </label>
+            <button type="button" class="img-picker-open-btn" onclick="openMediaPicker('creativebg')">
+              <i class="fas fa-images"></i> Browse Media
+            </button>
+            <button type="button" class="img-picker-url-btn" onclick="showUrlInput('creativebg')">
+              <i class="fas fa-link"></i> Paste URL
+            </button>
+          </div>
+          <div class="img-picker-url-input" id="creativebgUrlInput" style="display:none;">
+            <input type="text" placeholder="Paste image or video URL..." onchange="setCreativeBg(this.value)">
+            <button type="button" class="img-picker-url-apply" onclick="setCreativeBg(this.previousElementSibling.value)">Apply</button>
+          </div>
+        </div>
+
+        <!-- Creative Showreel Video -->
+        <div class="img-picker">
+          <label class="img-picker-label">Creative Showreel</label>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin:-8px 0 12px;">Showreel video for the creative page. Supports YouTube, Google Drive, or direct video URL.</p>
+          <div class="img-picker-preview img-picker-preview--rect" id="showreelPreview">
+            <% if (s.creative_showreel) { %>
+              <% if (s.creative_showreel.match(/\.(mp4|webm)$/i)) { %>
+                <video src="<%= s.creative_showreel %>" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video>
+              <% } else { %>
+                <img src="<%= s.creative_showreel %>" alt="Showreel" style="width:100%;height:100%;object-fit:cover;">
+              <% } %>
+              <button type="button" class="img-picker-remove" onclick="clearShowreel()" title="Remove">&times;</button>
+            <% } else { %>
+              <div class="img-picker-placeholder">
+                <i class="fas fa-play-circle"></i>
+                <span>No showreel set</span>
+              </div>
+            <% } %>
+          </div>
+          <input type="hidden" name="creative_showreel" id="showreelInput" value="<%= s.creative_showreel || '' %>">
+          <div class="img-picker-actions">
+            <label class="img-picker-upload-btn">
+              <i class="fas fa-upload"></i> Upload New
+              <input type="file" accept="image/*,video/mp4,video/webm" onchange="uploadShowreel(this)" style="display:none">
+            </label>
+            <button type="button" class="img-picker-open-btn" onclick="openMediaPicker('showreel')">
+              <i class="fas fa-images"></i> Browse Media
+            </button>
+            <button type="button" class="img-picker-url-btn" onclick="showUrlInput('showreel')">
+              <i class="fas fa-link"></i> Paste URL
+            </button>
+          </div>
+          <div class="img-picker-url-input" id="showreelUrlInput" style="display:none;">
+            <input type="text" placeholder="Paste YouTube, Drive, or video URL..." onchange="setShowreel(this.value)">
+            <button type="button" class="img-picker-url-apply" onclick="setShowreel(this.previousElementSibling.value)">Apply</button>
+          </div>
+        </div>
+
+        <!-- Media Picker Modal -->
+        <div class="media-picker-modal" id="mediaPickerModal">
+          <div class="media-picker-overlay" onclick="closeMediaPicker()"></div>
+          <div class="media-picker-content">
+            <div class="media-picker-header">
+              <h3>Select Image</h3>
+              <button type="button" onclick="closeMediaPicker()">&times;</button>
+            </div>
+            <div class="media-picker-grid" id="mediaPickerGrid">
+              <% if (typeof mediaFiles !== 'undefined' && mediaFiles.length > 0) { %>
+                <% mediaFiles.forEach(function(file) { %>
+                  <div class="media-picker-item" data-url="/uploads/<%= file %>" onclick="selectMedia(this)">
+                    <% if (file.match(/\.(mp4|webm)$/i)) { %>
+                      <div class="media-picker-video-thumb">
+                        <i class="fas fa-play-circle"></i>
+                        <video src="/uploads/<%= file %>" muted preload="metadata"></video>
+                      </div>
+                    <% } else { %>
+                      <img src="/uploads/<%= file %>" alt="<%= file %>">
+                    <% } %>
+                    <span><%= file %></span>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="media-picker-empty">
+                  <i class="fas fa-images"></i>
+                  <p>No media files found. Upload one first.</p>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>OG Image URL (social sharing)</label>
+            <input type="text" name="og_image" placeholder="/uploads/og-image.jpg" value="<%= s.og_image || '' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Logo Image URL (optional)</label>
+            <input type="text" name="logo_image" placeholder="/uploads/logo.png" value="<%= s.logo_image || '' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Favicon URL</label>
+          <input type="text" name="favicon" placeholder="/icons/favicon.ico" value="<%= s.favicon || '/icons/favicon.ico' %>">
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin:32px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);">About Page Content</h3>
+        <div class="admin-form-group">
+          <label>Page Heading</label>
+          <input type="text" name="about_heading" value="<%= s.about_heading || 'The Story Behind the Work' %>">
+        </div>
+        <div class="admin-form-group">
+          <label>Page Subheading</label>
+          <input type="text" name="about_subheading" value="<%= s.about_subheading || 'A journey through code, camera, and creativity.' %>">
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Bio Section Label</label>
+            <input type="text" name="about_bio_label" value="<%= s.about_bio_label || 'Who I Am' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Bio Section Title</label>
+            <input type="text" name="about_bio_title" value="<%= s.about_bio_title || 'Engineering & Artistry in Perfect Sync' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Bio Paragraph 1</label>
+          <textarea name="about_bio_1" rows="3"><%= s.about_bio_1 || 'I am a Full Stack Software Engineer and creative media professional based in Kenya, with 4+ years of experience in videography, photography, and audio production, alongside 3+ years in full-stack software development.' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Bio Paragraph 2</label>
+          <textarea name="about_bio_2" rows="3"><%= s.about_bio_2 || 'On the software side, I architect and build scalable applications using modern frameworks and cloud technologies. On the creative side, I capture cinematic moments through lens, light, and sound -- delivering compelling visual narratives with professional audio production.' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Bio Paragraph 3</label>
+          <textarea name="about_bio_3" rows="3"><%= s.about_bio_3 || 'This dual expertise allows me to approach every project with a unique perspective — combining the discipline of engineering with the freedom of artistic expression.' %></textarea>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Mission Title</label>
+            <input type="text" name="about_mission_title" value="<%= s.about_mission_title || 'My Mission' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Vision Title</label>
+            <input type="text" name="about_vision_title" value="<%= s.about_vision_title || 'My Vision' %>">
+          </div>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Mission Text</label>
+            <textarea name="about_mission_text" rows="3"><%= s.about_mission_text || 'To build software that makes a difference and create visual stories that inspire, blending technical excellence with artistic vision in every project.' %></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label>Vision Text</label>
+            <textarea name="about_vision_text" rows="3"><%= s.about_vision_text || 'To be a leading force in both technology and creative media, proving that the most powerful innovations happen at the intersection of code and creativity.' %></textarea>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin:32px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Career Timeline</h3>
+        <div class="admin-form-group">
+          <label>Timeline Section Label</label>
+          <input type="text" name="about_timeline_label" value="<%= s.about_timeline_label || 'My Journey' %>">
+        </div>
+        <div class="admin-form-group">
+          <label>Timeline Section Title</label>
+          <input type="text" name="about_timeline_title" value="<%= s.about_timeline_title || 'Career Timeline' %>">
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Timeline Item 1 - Title</label>
+            <input type="text" name="timeline_1_title" value="<%= s.timeline_1_title || 'Full Stack Developer & Creative Director' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Timeline Item 1 - Date</label>
+            <input type="text" name="timeline_1_date" value="<%= s.timeline_1_date || '2020 - Present' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Timeline Item 1 - Description</label>
+          <textarea name="timeline_1_desc" rows="2"><%= s.timeline_1_desc || 'Leading full-stack development projects and creative productions. Building enterprise applications and cinematic visual content.' %></textarea>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Timeline Item 2 - Title</label>
+            <input type="text" name="timeline_2_title" value="<%= s.timeline_2_title || 'Senior Software Engineer' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Timeline Item 2 - Date</label>
+            <input type="text" name="timeline_2_date" value="<%= s.timeline_2_date || '2018 - 2020' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Timeline Item 2 - Description</label>
+          <textarea name="timeline_2_desc" rows="2"><%= s.timeline_2_desc || 'Architected microservices, REST APIs, and cloud-native applications. Managed database design and deployment pipelines.' %></textarea>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Timeline Item 3 - Title</label>
+            <input type="text" name="timeline_3_title" value="<%= s.timeline_3_title || 'Freelance Cinematographer & Developer' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Timeline Item 3 - Date</label>
+            <input type="text" name="timeline_3_date" value="<%= s.timeline_3_date || '2016 - 2018' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Timeline Item 3 - Description</label>
+          <textarea name="timeline_3_desc" rows="2"><%= s.timeline_3_desc || 'Built web applications for clients while filming commercials, weddings, and corporate events. Developed my dual-career approach.' %></textarea>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Timeline Item 4 - Title</label>
+            <input type="text" name="timeline_4_title" value="<%= s.timeline_4_title || 'Junior Developer' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Timeline Item 4 - Date</label>
+            <input type="text" name="timeline_4_date" value="<%= s.timeline_4_date || '2015 - 2016' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Timeline Item 4 - Description</label>
+          <textarea name="timeline_4_desc" rows="2"><%= s.timeline_4_desc || 'Started my professional journey in software development. Built frontend interfaces and learned the fundamentals of full-stack development.' %></textarea>
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin:32px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Contact Page</h3>
+        <div class="admin-form-group">
+          <label>Contact Page Heading</label>
+          <input type="text" name="contact_heading" value="<%= s.contact_heading || 'Lets Work Together' %>">
+        </div>
+        <div class="admin-form-group">
+          <label>Contact Page Subheading</label>
+          <textarea name="contact_subheading" rows="2"><%= s.contact_subheading || 'Have a project in mind? Let\'s create something exceptional.' %></textarea>
+        </div>
+
+        <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin:32px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);">Social Links</h3>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>GitHub URL</label>
+            <input type="url" name="github_url" value="<%= s.github_url || 'https://github.com/ngure' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>LinkedIn URL</label>
+            <input type="url" name="linkedin_url" value="<%= s.linkedin_url || 'https://linkedin.com/in/ngure' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Instagram URL</label>
+            <input type="url" name="instagram_url" value="<%= s.instagram_url || 'https://instagram.com/ngure' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>YouTube URL</label>
+            <input type="url" name="youtube_url" value="<%= s.youtube_url || 'https://youtube.com/@ngure' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>TikTok URL</label>
+            <input type="url" name="tiktok_url" value="<%= s.tiktok_url || 'https://tiktok.com/@ngure' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>WhatsApp Number</label>
+            <input type="text" name="whatsapp" value="<%= s.whatsapp || '+254 700 000 000' %>">
+          </div>
+        </div>
+
+        <button type="submit" class="admin-btn" style="margin-top:16px;"><i class="fas fa-save"></i> Save All Settings</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+let pickerTarget = 'hero';
+
+function setHeroImage(url) {
+  if (!url) return;
+  document.getElementById('heroPortraitInput').value = url;
+  const preview = document.getElementById('heroPreview');
+  preview.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="Hero portrait"><button type="button" class="img-picker-remove" onclick="clearHeroImage()" title="Remove">&times;</button>';
+  document.getElementById('heroUrlInput').style.display = 'none';
+}
+
+function setAboutImage(url) {
+  if (!url) return;
+  document.getElementById('aboutImageInput').value = url;
+  const preview = document.getElementById('aboutPreview');
+  preview.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="About image"><button type="button" class="img-picker-remove" onclick="clearAboutImage()" title="Remove">&times;</button>';
+  document.getElementById('aboutUrlInput').style.display = 'none';
+}
+
+function setSoftwareBg(url) {
+  if (!url) return;
+  document.getElementById('softwareBgMediaInput').value = url;
+  const preview = document.getElementById('softwareBgPreview');
+  const isVideo = url.match(/\.(mp4|webm)$/i);
+  if (isVideo) {
+    preview.innerHTML = '<video src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video><button type="button" class="img-picker-remove" onclick="clearSoftwareBg()" title="Remove">&times;</button>';
+  } else {
+    preview.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="Software page background"><button type="button" class="img-picker-remove" onclick="clearSoftwareBg()" title="Remove">&times;</button>';
+  }
+  document.getElementById('softwarebgUrlInput').style.display = 'none';
+}
+
+function setCreativeBg(url) {
+  if (!url) return;
+  document.getElementById('creativeBgMediaInput').value = url;
+  const preview = document.getElementById('creativeBgPreview');
+  const isVideo = url.match(/\.(mp4|webm)$/i);
+  if (isVideo) {
+    preview.innerHTML = '<video src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video><button type="button" class="img-picker-remove" onclick="clearCreativeBg()" title="Remove">&times;</button>';
+  } else {
+    preview.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="Creative page background"><button type="button" class="img-picker-remove" onclick="clearCreativeBg()" title="Remove">&times;</button>';
+  }
+  document.getElementById('creativebgUrlInput').style.display = 'none';
+}
+
+function clearSoftwareBg() {
+  document.getElementById('softwareBgMediaInput').value = '';
+  document.getElementById('softwareBgPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-code"></i><span>No background set</span></div>';
+}
+
+function clearCreativeBg() {
+  document.getElementById('creativeBgMediaInput').value = '';
+  document.getElementById('creativeBgPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-film"></i><span>No background set</span></div>';
+}
+
+function setShowreel(url) {
+  if (!url) return;
+  document.getElementById('showreelInput').value = url;
+  const preview = document.getElementById('showreelPreview');
+  const isVideo = url.match(/\.(mp4|webm)$/i);
+  if (isVideo) {
+    preview.innerHTML = '<video src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video><button type="button" class="img-picker-remove" onclick="clearShowreel()" title="Remove">&times;</button>';
+  } else {
+    preview.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="Showreel" style="width:100%;height:100%;object-fit:cover;"><button type="button" class="img-picker-remove" onclick="clearShowreel()" title="Remove">&times;</button>';
+  }
+  document.getElementById('showreelUrlInput').style.display = 'none';
+}
+
+function clearShowreel() {
+  document.getElementById('showreelInput').value = '';
+  document.getElementById('showreelPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-play-circle"></i><span>No showreel set</span></div>';
+}
+
+function clearHeroImage() {
+  document.getElementById('heroPortraitInput').value = '';
+  document.getElementById('heroPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-user"></i><span>No image set</span></div>';
+}
+
+function clearAboutImage() {
+  document.getElementById('aboutImageInput').value = '';
+  document.getElementById('aboutPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-image"></i><span>No image set</span></div>';
+}
+
+function clearHeroBgMedia() {
+  document.getElementById('heroBgMediaInput').value = '';
+  document.getElementById('heroBgPreview').innerHTML = '<div class="img-picker-placeholder"><i class="fas fa-photo-video"></i><span>No background set</span></div>';
+}
+
+function showUrlInput(type) {
+  const el = document.getElementById(type + 'UrlInput');
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+}
+
+function openMediaPicker(type) {
+  pickerTarget = type;
+  document.getElementById('mediaPickerModal').classList.add('open');
+}
+
+function closeMediaPicker() {
+  document.getElementById('mediaPickerModal').classList.remove('open');
+}
+
+function selectMedia(el) {
+  const url = el.getAttribute('data-url');
+  if (pickerTarget === 'hero') {
+    setHeroImage(url);
+  } else if (pickerTarget === 'softwarebg') {
+    setSoftwareBg(url);
+  } else if (pickerTarget === 'creativebg') {
+    setCreativeBg(url);
+  } else if (pickerTarget === 'showreel') {
+    setShowreel(url);
+  } else {
+    setAboutImage(url);
+  }
+  closeMediaPicker();
+}
+
+function uploadHeroImage(input) {
+  uploadImage(input, function(url) { setHeroImage(url); });
+}
+
+function uploadAboutImage(input) {
+  uploadImage(input, function(url) { setAboutImage(url); });
+}
+
+function uploadSoftwareBg(input) {
+  uploadImage(input, function(url) { setSoftwareBg(url); });
+}
+
+function uploadCreativeBg(input) {
+  uploadImage(input, function(url) { setCreativeBg(url); });
+}
+
+function uploadShowreel(input) {
+  uploadImage(input, function(url) { setShowreel(url); });
+}
+
+function uploadImage(input, callback) {
+  if (!input.files || !input.files[0]) return;
+  var formData = new FormData();
+  formData.append('file', input.files[0]);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/admin/media/upload-json', true);
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      try {
+        var resp = JSON.parse(xhr.responseText);
+        if (resp.url) callback(resp.url);
+        else alert('Upload failed: no URL returned');
+      } catch(e) {
+        alert('Upload failed: invalid response');
+      }
+    } else {
+      alert('Upload failed. Try again.');
+    }
+    input.value = '';
+  };
+  xhr.send(formData);
+}
+
+document.addEventListener('click', function(e) {
+  var modal = document.getElementById('mediaPickerModal');
+  if (modal.classList.contains('open') && e.target.classList.contains('media-picker-overlay')) {
+    closeMediaPicker();
+  }
+});
+</script>
+
+<%- include('../../partials/admin-footer') %>

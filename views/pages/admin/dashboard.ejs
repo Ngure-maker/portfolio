@@ -1,0 +1,71 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Dashboard</h1>
+      <p>Welcome back, <%= user.name %></p>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat-card" style="border-left: 3px solid var(--accent);">
+        <div class="admin-stat-icon"><i class="fas fa-code"></i></div>
+        <div>
+          <span class="admin-stat-number"><%= stats.softwareProjects || 0 %></span>
+          <span class="admin-stat-label">Software Projects</span>
+        </div>
+      </div>
+      <div class="admin-stat-card" style="border-left: 3px solid #ffc107;">
+        <div class="admin-stat-icon"><i class="fas fa-film"></i></div>
+        <div>
+          <span class="admin-stat-number"><%= stats.creativeProjects || 0 %></span>
+          <span class="admin-stat-label">Creative Projects</span>
+        </div>
+      </div>
+      <div class="admin-stat-card" style="border-left: 3px solid #0dcaf0;">
+        <div class="admin-stat-icon"><i class="fas fa-newspaper"></i></div>
+        <div>
+          <span class="admin-stat-number"><%= stats.blogPosts || 0 %></span>
+          <span class="admin-stat-label">Blog Posts</span>
+        </div>
+      </div>
+      <div class="admin-stat-card" style="border-left: 3px solid #198754;">
+        <div class="admin-stat-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <span class="admin-stat-number"><%= stats.messages || 0 %></span>
+          <span class="admin-stat-label">Messages</span>
+          <% if (stats.unreadMessages > 0) { %>
+            <span class="admin-badge"><%= stats.unreadMessages %> unread</span>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="admin-section">
+      <div class="admin-section-header">
+        <h2>Recent Messages</h2>
+        <a href="/admin/messages" class="admin-link">View All <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="admin-table">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Email</th><th>Type</th><th>Date</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <% if (recentMessages && recentMessages.length > 0) { %>
+              <% recentMessages.forEach(function(m) { %>
+                <tr>
+                  <td><%= m.name %></td>
+                  <td><%= m.email %></td>
+                  <td><%= m.projectType || '-' %></td>
+                  <td><%= new Date(m.createdAt).toLocaleDateString() %></td>
+                  <td><span class="admin-status <%= m.read ? 'read' : 'unread' %>"><%= m.read ? 'Read' : 'New' %></span></td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No messages yet.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

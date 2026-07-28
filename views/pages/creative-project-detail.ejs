@@ -1,0 +1,185 @@
+<section class="project-hero" id="projectHero">
+  <% 
+    var heroImages = [];
+    if (project.heroImage) heroImages.push(project.heroImage);
+    if (project.gallery) {
+      project.gallery.split(',').forEach(function(s) {
+        var t = s.trim();
+        if (t) heroImages.push(t);
+      });
+    }
+  %>
+  <% if (heroImages.length > 0) { %>
+    <div class="hero-slideshow" id="heroSlideshow">
+      <% heroImages.forEach(function(img, idx) { 
+        var slideStyle = 'background-image: url(' + img + ');' + (idx === 0 ? 'opacity:1;' : '');
+      %>
+        <div class="hero-slide"<% if (slideStyle) { %> style="<%= slideStyle %>"<% } %>></div>
+      <% }); %>
+      <div class="hero-slideshow-overlay"></div>
+    </div>
+  <% } else { %>
+    <div class="page-header-bg">
+      <div class="glow glow-red" style="top: -20%; right: -10%;"></div>
+      <div class="hero-grid"></div>
+    </div>
+  <% } %>
+  <div class="container">
+    <div class="project-hero-content">
+      <span class="section-label reveal"><%= project.category %></span>
+      <h1 class="reveal"><%= project.title %></h1>
+      <p class="reveal"><%= project.description %></p>
+      <div class="project-meta reveal">
+        <div class="project-meta-item">
+          <h4>Category</h4>
+          <span><%= project.category %></span>
+        </div>
+        <% if (project.clientName) { %>
+        <div class="project-meta-item">
+          <h4>Client</h4>
+          <span><%= project.clientName %></span>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('#heroSlideshow .hero-slide');
+  if (slides.length < 2) return;
+  var current = 0;
+  setInterval(function() {
+    slides[current].style.opacity = '0';
+    current = (current + 1) % slides.length;
+    slides[current].style.opacity = '1';
+  }, 4000);
+})();
+</script>
+
+<% if (project.heroVideo || project.heroImage) { %>
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Preview</span>
+      <h2 class="section-title">Visual Preview</h2>
+    </div>
+    <% if (project.heroVideo) { %>
+      <% 
+        var embedUrl = '';
+        var ytMatch = project.heroVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        var gdMatch = project.heroVideo.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (ytMatch) {
+          embedUrl = 'https://www.youtube.com/embed/' + ytMatch[1];
+        } else if (gdMatch) {
+          embedUrl = 'https://drive.google.com/file/d/' + gdMatch[1] + '/preview';
+        }
+      %>
+      <% if (embedUrl) { %>
+        <div style="width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 40px;">
+          <iframe src="<%= embedUrl %>" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+      <% } else { %>
+        <div style="width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 40px;">
+          <video controls style="width:100%;height:100%;background:#000;">
+            <source src="<%= project.heroVideo %>" type="video/mp4">
+          </video>
+        </div>
+      <% } %>
+    <% } else if (project.heroImage) { %>
+      <div style="width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 40px;">
+        <img src="<%= project.heroImage %>" alt="<%= project.title %>" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+    <% } %>
+  </div>
+</section>
+<% } %>
+
+<section class="section">
+  <div class="container">
+    <div class="content-grid">
+      <div class="reveal-left">
+        <span class="section-label">About</span>
+        <h2 class="section-title">Project Details</h2>
+        <div style="color: var(--text-secondary); line-height: 1.8;">
+          <%- project.content %>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <% if (project.equipment) { %>
+          <div style="margin-bottom: 32px;">
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 1rem; margin-bottom: 16px;">Equipment Used</h3>
+            <div class="project-tech-grid">
+              <% var equip = project.equipment.split(',').map(e => e.trim()); %>
+              <% equip.forEach(function(e) { %>
+                <span class="project-tech-tag"><%= e %></span>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+        <% if (project.clientReview) { %>
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px;">
+            <i class="fas fa-quote-left" style="color: var(--accent); font-size: 1.5rem; margin-bottom: 16px; display: block;"></i>
+            <p style="color: var(--text-secondary); font-style: italic; line-height: 1.8; margin-bottom: 16px;"><%= project.clientReview %></p>
+            <div>
+              <strong><%= project.clientName %></strong>
+              <span style="display: block; color: var(--text-muted); font-size: 0.85rem;"><%= project.clientRole %></span>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (project.gallery) {
+  var galleryItems = project.gallery.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+  if (galleryItems.length > 0) {
+%>
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Gallery</span>
+      <h2 class="section-title">More Shots</h2>
+    </div>
+    <div class="project-gallery-grid reveal">
+      <% galleryItems.forEach(function(img) { %>
+        <a href="<%= img %>" class="project-gallery-item" target="_blank">
+          <img src="<%= img %>" alt="Gallery image">
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } } %>
+
+<% if (related && related.length > 0) { %>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Related</span>
+      <h2 class="section-title reveal">More Projects</h2>
+    </div>
+    <div class="featured-grid creative-grid">
+      <% related.forEach(function(p) { %>
+        <a href="/projects/creative/<%= p.slug %>" class="featured-card creative-card reveal">
+          <div class="featured-card-image">
+            <% if (p.heroImage) { %>
+              <img src="<%= p.heroImage %>" alt="<%= p.title %>">
+            <% } else { %>
+              <div class="card-image-placeholder creative-placeholder"><i class="fas fa-film"></i></div>
+            <% } %>
+            <div class="featured-card-overlay creative-overlay"><span>View <i class="fas fa-arrow-right"></i></span></div>
+          </div>
+          <div class="featured-card-content">
+            <span class="featured-card-category"><%= p.category %></span>
+            <h3><%= p.title %></h3>
+            <p><%= p.description.substring(0, 100) %>...</p>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>

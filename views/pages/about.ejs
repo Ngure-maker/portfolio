@@ -1,0 +1,161 @@
+<section class="page-header" id="aboutHero">
+  <div class="page-header-bg">
+    <div class="glow glow-red" style="top: -20%; right: -10%;"></div>
+    <div class="glow glow-red" style="bottom: -20%; left: -10%;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">About Me</span>
+    <h1 class="reveal"><%- settings && settings.about_heading ? settings.about_heading : 'The Story Behind<br>the Work' %></h1>
+    <p class="reveal"><%= settings && settings.about_subheading ? settings.about_subheading : 'A journey through code, camera, and creativity.' %></p>
+  </div>
+</section>
+
+<section class="section" id="bio">
+  <div class="container">
+    <div class="content-grid">
+      <div class="reveal-left">
+        <% if (settings && settings.about_image) { %>
+          <div class="content-image-placeholder" style="height: 500px; overflow: hidden;">
+            <img src="<%= settings.about_image %>" alt="About Isaac Ngure" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+          </div>
+        <% } else { %>
+          <div class="content-image-placeholder" style="height: 500px;">
+            <div style="text-align:center;">
+              <i class="fas fa-user"></i>
+              <p style="margin-top:16px; font-size:0.9rem; opacity:0.5;">Professional Portrait</p>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <div class="reveal-right">
+        <span class="section-label"><%= settings && settings.about_bio_label ? settings.about_bio_label : 'Who I Am' %></span>
+        <h2 class="section-title"><%- settings && settings.about_bio_title ? settings.about_bio_title : 'Engineering & Artistry<br>in Perfect Sync' %></h2>
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
+          <%= settings && settings.about_bio_1 ? settings.about_bio_1 : 'I am a Full Stack Software Engineer and creative media professional based in Kenya, with 4+ years of experience in videography, photography, and audio production, alongside 3+ years in full-stack software development.' %>
+        </p>
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
+          <%= settings && settings.about_bio_2 ? settings.about_bio_2 : 'On the software side, I architect and build scalable applications using modern frameworks and cloud technologies. On the creative side, I capture cinematic moments through lens, light, and sound — delivering compelling visual narratives with professional audio production.' %>
+        </p>
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem;">
+          <%= settings && settings.about_bio_3 ? settings.about_bio_3 : 'This dual expertise allows me to approach every project with a unique perspective â€” combining the discipline of engineering with the freedom of artistic expression.' %>
+        </p>
+        <div class="hero-buttons">
+          <a href="/projects/software" class="btn-primary">View Software Work <i class="fas fa-arrow-right"></i></a>
+          <a href="/projects/creative" class="btn-outline">View Creative Work <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="journey">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal"><%= settings && settings.about_timeline_label ? settings.about_timeline_label : 'My Journey' %></span>
+      <h2 class="section-title reveal"><%= settings && settings.about_timeline_title ? settings.about_timeline_title : 'Career Timeline' %></h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <h3><%= settings && settings.timeline_1_title ? settings.timeline_1_title : 'Full Stack Developer & Creative Director' %></h3>
+        <span><%= settings && settings.timeline_1_date ? settings.timeline_1_date : '2020 - Present' %></span>
+        <p><%= settings && settings.timeline_1_desc ? settings.timeline_1_desc : 'Leading full-stack development projects and creative productions. Building enterprise applications and cinematic visual content.' %></p>
+      </div>
+      <div class="timeline-item reveal">
+        <h3><%= settings && settings.timeline_2_title ? settings.timeline_2_title : 'Senior Software Engineer' %></h3>
+        <span><%= settings && settings.timeline_2_date ? settings.timeline_2_date : '2018 - 2020' %></span>
+        <p><%= settings && settings.timeline_2_desc ? settings.timeline_2_desc : 'Architected microservices, REST APIs, and cloud-native applications. Managed database design and deployment pipelines.' %></p>
+      </div>
+      <div class="timeline-item reveal">
+        <h3><%= settings && settings.timeline_3_title ? settings.timeline_3_title : 'Freelance Cinematographer & Developer' %></h3>
+        <span><%= settings && settings.timeline_3_date ? settings.timeline_3_date : '2016 - 2018' %></span>
+        <p><%= settings && settings.timeline_3_desc ? settings.timeline_3_desc : 'Built web applications for clients while filming commercials, weddings, and corporate events. Developed my dual-career approach.' %></p>
+      </div>
+      <div class="timeline-item reveal">
+        <h3><%= settings && settings.timeline_4_title ? settings.timeline_4_title : 'Junior Developer' %></h3>
+        <span><%= settings && settings.timeline_4_date ? settings.timeline_4_date : '2015 - 2016' %></span>
+        <p><%= settings && settings.timeline_4_desc ? settings.timeline_4_desc : 'Started my professional journey in software development. Built frontend interfaces and learned the fundamentals of full-stack development.' %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Expertise</span>
+      <h2 class="section-title reveal">Skills & Technologies</h2>
+    </div>
+    <% if (skills && skills.length > 0) { %>
+      <div class="skills-grid">
+        <% skills.forEach(function(skill) { %>
+          <div class="skill-item reveal">
+            <div class="skill-item-header">
+              <h4><%= skill.name %></h4>
+              <span><%= skill.level %>%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: <%= skill.level %>%"></div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <i class="fas fa-code"></i>
+        <p>Skills data coming soon.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="mission">
+  <div class="container">
+    <div class="dual-grid">
+      <div class="dual-card reveal-left">
+        <div class="dual-icon"><i class="fas fa-bullseye"></i></div>
+        <h3><%= settings && settings.about_mission_title ? settings.about_mission_title : 'My Mission' %></h3>
+        <p><%= settings && settings.about_mission_text ? settings.about_mission_text : 'To build software that makes a difference and create visual stories that inspire, blending technical excellence with artistic vision in every project.' %></p>
+      </div>
+      <div class="dual-card reveal-right">
+        <div class="dual-icon"><i class="fas fa-eye"></i></div>
+        <h3><%= settings && settings.about_vision_title ? settings.about_vision_title : 'My Vision' %></h3>
+        <p><%= settings && settings.about_vision_text ? settings.about_vision_text : 'To be a leading force in both technology and creative media, proving that the most powerful innovations happen at the intersection of code and creativity.' %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (testimonials && testimonials.length > 0) { %>
+<section class="section" id="aboutTestimonials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Testimonials</span>
+      <h2 class="section-title reveal">What People Say</h2>
+    </div>
+    <div class="featured-grid">
+      <% testimonials.forEach(function(t) { %>
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <% for (var i = 0; i < t.rating; i++) { %><i class="fas fa-star"></i><% } %>
+          </div>
+          <p class="testimonial-content"><%= t.content %></p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              <% if (t.avatar) { %>
+                <img src="<%= t.avatar %>" alt="<%= t.name %>">
+              <% } else { %>
+                <div class="avatar-placeholder"><%= t.name.charAt(0) %></div>
+              <% } %>
+            </div>
+            <div>
+              <strong><%= t.name %></strong>
+              <span><%= t.role %><%= t.company ? ', ' + t.company : '' %></span>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>

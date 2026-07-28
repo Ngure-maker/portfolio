@@ -1,0 +1,30 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Skills</h1>
+    </div>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Category</th><th>Level</th><th>Order</th></tr>
+        </thead>
+        <tbody>
+          <% if (skills && skills.length > 0) { %>
+            <% skills.forEach(function(s) { %>
+              <tr>
+                <td><%= s.name %></td>
+                <td><%= s.category %></td>
+                <td><%= s.level %>%</td>
+                <td><%= s.order %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No skills configured.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

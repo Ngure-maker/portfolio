@@ -1,0 +1,8 @@
+node_modules/
+.env
+public/images/uploads/
+public/videos/uploads/
+.DS_Store
+*.log
+dist/
+build/

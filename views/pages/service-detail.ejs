@@ -1,0 +1,36 @@
+<section class="page-header">
+  <div class="page-header-bg">
+    <div class="glow glow-red" style="top: -20%; left: -10%;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal"><%= service.category === 'software' ? 'Software Engineering' : 'Creative Production' %></span>
+    <h1 class="reveal"><%= service.title %></h1>
+    <p class="reveal"><%= service.description %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="content-grid">
+      <div>
+        <span class="section-label reveal">Service Details</span>
+        <h2 class="section-title reveal"><%= service.title %></h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem;">
+          <%- service.content %>
+        </div>
+        <a href="/contact" class="btn-primary reveal">Hire Me for This Service <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="reveal">
+        <div class="service-card" style="padding: 60px 40px; text-align: center;">
+          <div class="service-card-icon" style="margin: 0 auto 24px; width: 72px; height: 72px; font-size: 1.8rem;">
+            <i class="fas <%= service.icon %>"></i>
+          </div>
+          <h3 style="margin-bottom: 16px;"><%= service.title %></h3>
+          <p style="color: var(--text-muted); line-height: 1.7;"><%= service.description %></p>
+          <a href="/contact" class="btn-primary" style="margin-top: 24px;">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

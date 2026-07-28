@@ -1,0 +1,57 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1><%= post ? 'Edit' : 'New' %> Blog Post</h1>
+      <a href="/admin/blog" class="admin-btn admin-btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="admin-form">
+      <form action="/admin/blog<%= post ? '/' + post.id + '?_method=PUT' : '' %>" method="POST">
+        <div class="admin-form-group">
+          <label>Title *</label>
+          <input type="text" name="title" value="<%= post ? post.title : '' %>" required>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Category *</label>
+            <input type="text" name="category" value="<%= post ? post.category : '' %>" required>
+          </div>
+          <div class="admin-form-group">
+            <label>Cover Image URL</label>
+            <input type="text" name="coverImage" value="<%= post ? post.coverImage : '' %>">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Excerpt *</label>
+          <textarea name="excerpt" rows="3" required><%= post ? post.excerpt : '' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Content (HTML) *</label>
+          <textarea name="content" rows="15" required><%= post ? post.content : '' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Tags (comma separated)</label>
+          <input type="text" name="tags" value="<%= post ? post.tags : '' %>" placeholder="javascript, webdev, tutorial">
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Published</label>
+            <select name="published">
+              <option value="true" <%= !post || post.published ? 'selected' : '' %>>Yes</option>
+              <option value="false" <%= post && !post.published ? 'selected' : '' %>>No</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Featured</label>
+            <select name="featured">
+              <option value="true" <%= post && post.featured ? 'selected' : '' %>>Yes</option>
+              <option value="false" <%= !post || !post.featured ? 'selected' : '' %>>No</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="admin-btn"><%= post ? 'Update' : 'Create' %> Post</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

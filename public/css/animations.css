@@ -1,0 +1,174 @@
+/* =========== GSAP ANCHOR STYLES =========== */
+
+[data-animate="text"] {
+  opacity: 0;
+}
+
+[data-animate="fade"] {
+  opacity: 0;
+}
+
+[data-animate="scale"] {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.line {
+  overflow: hidden;
+  display: block;
+}
+
+.line-inner {
+  display: block;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* =========== MAGNETIC HOVER =========== */
+.magnetic {
+  transition: transform 0.2s ease;
+}
+
+/* =========== CARD LIFT =========== */
+.card-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-accent);
+}
+
+/* =========== PARALLAX =========== */
+.parallax-wrap {
+  overflow: hidden;
+}
+
+.parallax-item {
+  will-change: transform;
+}
+
+/* =========== IMAGE REVEAL =========== */
+.img-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-reveal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-primary);
+  transform: translateX(0);
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.img-reveal.revealed::after {
+  transform: translateX(101%);
+}
+
+.img-reveal img {
+  transform: scale(1.1);
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.img-reveal.revealed img {
+  transform: scale(1);
+}
+
+/* =========== PROGRESSIVE LOAD =========== */
+.progressive-load {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.progressive-load.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========== DIVIDER ANIMATION =========== */
+.divider {
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.divider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-primary);
+  animation: dividerReveal 1.5s ease forwards;
+}
+
+@keyframes dividerReveal {
+  to { transform: translateX(100%); }
+}
+
+/* =========== NUMBER COUNTER =========== */
+.counter-number {
+  display: inline-block;
+}
+
+/* =========== HOVER GLOW BUTTONS =========== */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255,31,31,0.3), transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+}
+
+/* =========== SECTION IN VIEW =========== */
+.section-in-view .section-label {
+  animation: fadeUp 0.6s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========== CURSOR (optional, for desktop) =========== */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor.hovered {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 31, 31, 0.1);
+}

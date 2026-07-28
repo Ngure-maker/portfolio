@@ -1,0 +1,32 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Message from <%= message.name %></h1>
+      <div>
+        <a href="/admin/messages" class="admin-btn admin-btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+        <form action="/admin/messages/<%= message.id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this message?')">
+          <button type="submit" class="admin-btn admin-btn-danger"><i class="fas fa-trash"></i> Delete</button>
+        </form>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-card-section">
+        <div class="admin-form-grid">
+          <div><strong>Name:</strong> <%= message.name %></div>
+          <div><strong>Email:</strong> <a href="mailto:<%= message.email %>"><%= message.email %></a></div>
+          <div><strong>Phone:</strong> <%= message.phone || '-' %></div>
+          <div><strong>Received:</strong> <%= new Date(message.createdAt).toLocaleString() %></div>
+          <div><strong>Project Type:</strong> <%= message.projectType || '-' %></div>
+          <div><strong>Budget:</strong> <%= message.budget || '-' %></div>
+          <div><strong>Timeline:</strong> <%= message.timeline || '-' %></div>
+        </div>
+      </div>
+      <div class="admin-card-section">
+        <h3 style="margin-bottom: 12px;">Message</h3>
+        <p style="line-height: 1.8; color: var(--text-secondary);"><%= message.description %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

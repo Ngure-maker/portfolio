@@ -1,0 +1,38 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Blog Posts</h1>
+      <a href="/admin/blog/new" class="admin-btn"><i class="fas fa-plus"></i> New Post</a>
+    </div>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr><th>Title</th><th>Category</th><th>Published</th><th>Date</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(function(p) { %>
+              <tr>
+                <td><strong><%= p.title %></strong></td>
+                <td><%= p.category %></td>
+                <td><%= p.published ? 'Yes' : 'No' %></td>
+                <td><%= new Date(p.createdAt).toLocaleDateString() %></td>
+                <td class="admin-actions">
+                  <a href="/blog/<%= p.slug %>" class="admin-action-btn" target="_blank" title="View"><i class="fas fa-eye"></i></a>
+                  <a href="/admin/blog/<%= p.id %>/edit" class="admin-action-btn" title="Edit"><i class="fas fa-edit"></i></a>
+                  <form action="/admin/blog/<%= p.id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this post?')">
+                    <button type="submit" class="admin-action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No posts yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

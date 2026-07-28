@@ -1,0 +1,321 @@
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <% if (settings && settings.hero_bg_media) { %>
+      <% if (settings.hero_bg_media.match(/\.(mp4|webm)$/i)) { %>
+        <video class="hero-bg-media" src="<%= settings.hero_bg_media %>" autoplay muted loop playsinline></video>
+      <% } else { %>
+        <img class="hero-bg-media" src="<%= settings.hero_bg_media %>" alt="">
+      <% } %>
+      <div class="hero-bg-overlay"></div>
+    <% } %>
+    <div class="glow glow-red" style="top: -10%; left: -5%;"></div>
+    <div class="glow glow-red" style="bottom: -10%; right: -5%;"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-decorations">
+      <div class="hero-deco-circle" style="width: 400px; height: 400px; top: 5%; right: 15%;"></div>
+      <div class="hero-deco-circle" style="width: 200px; height: 200px; bottom: 10%; left: 8%;"></div>
+      <div class="hero-deco-curve"></div>
+      <div class="hero-deco-zigzag"></div>
+    </div>
+    <div class="hero-circles">
+      <div class="hero-circle" style="width: 300px; height: 300px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+      <div class="hero-circle" style="width: 200px; height: 200px; top: 60%; right: 15%; animation-delay: 2s;"></div>
+      <div class="hero-circle" style="width: 150px; height: 150px; bottom: 20%; left: 30%; animation-delay: 4s;"></div>
+    </div>
+  </div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-greeting" data-animate="text">Hello, I'm</p>
+      <h1 class="hero-name" data-animate="text">Isaac Ngure</h1>
+      <div class="hero-professions" data-animate="text">
+        <span class="hero-profession">Full Stack Software Engineer</span>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Cinematographer</span>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Videographer</span>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Photographer</span>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Audio Technician</span>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Video Editor</span>>
+        <span class="hero-profession-dot">•</span>
+        <span class="hero-profession">Video Editor</span>
+      </div>
+      <p class="hero-bio" data-animate="fade">I build modern, scalable software solutions while crafting cinematic visual experiences through photography, filmmaking and digital storytelling. My mission is to merge technology and creativity into impactful products and unforgettable visual narratives.</p>
+      <div class="hero-buttons" data-animate="fade">
+        <a href="/projects/software" class="btn-primary">Explore My Work <i class="fas fa-arrow-right"></i></a>
+        <a href="/contact" class="btn-outline">Hire Me</a>
+      </div>
+    </div>
+    <div class="hero-image" data-animate="scale">
+      <div class="hero-portrait-wrapper">
+        <div class="hero-portrait-glow"></div>
+        <div class="hero-portrait-circles">
+          <div class="hero-float-circle" style="width: 160px; height: 160px; top: -8%; right: -8%; animation-delay: 0s;"></div>
+          <div class="hero-float-circle" style="width: 100px; height: 100px; bottom: 20%; left: -12%; animation-delay: 1.5s;"></div>
+          <div class="hero-float-circle" style="width: 70px; height: 70px; bottom: -8%; right: 30%; animation-delay: 3s;"></div>
+        </div>
+        <div class="hero-portrait-frame">
+          <% if (settings && settings.hero_portrait) { %>
+          <img src="<%= settings.hero_portrait %>" alt="Isaac Ngure" id="heroPortrait">
+          <% } else { %>
+          <div class="hero-portrait-fallback">
+            <div class="placeholder-silhouette">
+              <div class="silhouette-head"></div>
+              <div class="silhouette-body"></div>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <a href="#stats" aria-label="Scroll down">
+      <span>Scroll</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats section" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item" data-count="<%= stats.projectsCompleted %>">
+        <span class="stat-number" data-target="<%= stats.projectsCompleted %>">0</span>
+        <span class="stat-label">Projects Completed</span>
+      </div>
+      <div class="stat-item" data-count="<%= stats.clients %>">
+        <span class="stat-number" data-target="<%= stats.clients %>">0</span>
+        <span class="stat-label">Clients</span>
+      </div>
+      <div class="stat-item" data-count="<%= stats.yearsExperience %>">
+        <span class="stat-number" data-target="<%= stats.yearsExperience %>">0</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div class="stat-item" data-count="<%= stats.videosProduced %>">
+        <span class="stat-number" data-target="<%= stats.videosProduced %>">0</span>
+        <span class="stat-label">Videos Produced</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Software Projects Section -->
+<section class="section featured-section" id="featuredSoftware">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Software Engineering</span>
+      <h2 class="section-title reveal">Featured Projects</h2>
+      <p class="section-subtitle reveal">Full-stack applications built with modern architectures and clean code.</p>
+    </div>
+    <div class="featured-grid">
+      <% if (featuredSoftware && featuredSoftware.length > 0) { %>
+        <% featuredSoftware.forEach(function(project) { %>
+          <a href="/projects/software/<%= project.slug %>" class="featured-card reveal">
+            <div class="featured-card-image">
+              <% if (project.heroImage) { %>
+                <img src="<%= project.heroImage %>" alt="<%= project.title %>">
+              <% } else { %>
+                <div class="card-image-placeholder"><i class="fas fa-code"></i></div>
+              <% } %>
+              <div class="featured-card-overlay">
+                <span>View Project <i class="fas fa-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="featured-card-content">
+              <span class="featured-card-category"><%= project.category %></span>
+              <h3><%= project.title %></h3>
+              <p><%= project.description.substring(0, 120) %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      <% } else { %>
+        <div class="empty-state reveal">
+          <i class="fas fa-code"></i>
+          <p>Software projects coming soon.</p>
+        </div>
+      <% } %>
+    </div>
+    <div class="section-cta reveal">
+      <a href="/projects/software" class="btn-primary">View All Projects <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Creative Works Section -->
+<section class="section creative-section" id="featuredCreative">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Creative Production</span>
+      <h2 class="section-title reveal">Visual Stories</h2>
+      <p class="section-subtitle reveal">Cinematic visual experiences crafted with passion and precision.</p>
+    </div>
+    <div class="featured-grid creative-grid">
+      <% if (featuredCreative && featuredCreative.length > 0) { %>
+        <% featuredCreative.forEach(function(project) { %>
+          <a href="/projects/creative/<%= project.slug %>" class="featured-card creative-card reveal">
+            <div class="featured-card-image">
+              <%
+                var thumbUrl = "";
+                var isDirectVideo = false;
+                if (project.heroImage) {
+                  thumbUrl = project.heroImage;
+                } else if (project.heroVideo) {
+                  var yt = project.heroVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                  var gd = project.heroVideo.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+                  if (yt) { thumbUrl = "https://img.youtube.com/vi/" + yt[1] + "/maxresdefault.jpg"; }
+                  else if (gd) { thumbUrl = "https://drive.google.com/thumbnail?id=" + gd[1]; }
+                  else if (project.heroVideo.match(/\.(mp4|webm|mov)$/i)) { isDirectVideo = true; }
+                }
+              %>
+              <% if (thumbUrl) { %>
+                <img src="<%= thumbUrl %>" alt="<%= project.title %>">
+              <% } %>
+              <% if (!thumbUrl && isDirectVideo) { %>
+                <video class="card-video-thumb" src="<%= project.heroVideo %>" muted preload="metadata" playsinline></video>
+              <% } %>
+              <% if (!thumbUrl && !isDirectVideo) { %>
+                <div class="card-image-placeholder creative-placeholder"><i class="fas fa-film"></i></div>
+              <% } %>
+              <div class="featured-card-overlay creative-overlay">
+                <span>View Project <i class="fas fa-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="featured-card-content">
+              <span class="featured-card-category"><%= project.category %></span>
+              <h3><%= project.title %></h3>
+              <p><%= project.description.substring(0, 120) %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      <% } else { %>
+        <div class="empty-state reveal">
+          <i class="fas fa-film"></i>
+          <p>Creative projects coming soon.</p>
+        </div>
+      <% } %>
+    </div>
+    <div class="section-cta reveal">
+      <a href="/projects/creative" class="btn-primary">View Portfolio <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Dual Expertise Section -->
+<section class="section dual-section" id="dualExpertise">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Two Worlds, One Vision</span>
+      <h2 class="section-title reveal">Software Engineering & Creative Production</h2>
+      <p class="section-subtitle reveal">Bridging the gap between technical precision and artistic expression.</p>
+    </div>
+    <div class="dual-grid">
+      <div class="dual-card reveal-left" style="--accent-color: #ff1f1f;">
+        <div class="dual-icon">
+          <i class="fas fa-terminal"></i>
+        </div>
+        <h3>Full Stack Engineer</h3>
+        <p>Building robust, scalable applications from concept to deployment.</p>
+        <ul class="dual-list">
+          <li><i class="fas fa-check"></i> Web & Mobile Development</li>
+          <li><i class="fas fa-check"></i> RESTful APIs & Microservices</li>
+          <li><i class="fas fa-check"></i> Database Architecture</li>
+          <li><i class="fas fa-check"></i> Cloud Deployment & DevOps</li>
+        </ul>
+        <a href="/software" class="btn-text">Explore Software <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="dual-card reveal-right" style="--accent-color: #ffffff;">
+        <div class="dual-icon">
+          <i class="fas fa-camera"></i>
+        </div>
+        <h3>Visual Storyteller</h3>
+        <p>Creating cinematic visual narratives through lens and light.</p>
+        <ul class="dual-list">
+          <li><i class="fas fa-check"></i> Cinematography & Videography</li>
+          <li><i class="fas fa-check"></i> Photography & Editing</li>
+          <li><i class="fas fa-check"></i> Color Grading</li>
+          <li><i class="fas fa-check"></i> Aerial & Drone Footage</li>
+        </ul>
+        <a href="/creative" class="btn-text">Explore Creative <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<% if (testimonials && testimonials.length > 0) { %>
+<section class="section testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Testimonials</span>
+      <h2 class="section-title reveal">What Clients Say</h2>
+    </div>
+    <div class="testimonials-slider swiper" id="testimonialsSlider">
+      <div class="swiper-wrapper">
+        <% testimonials.forEach(function(t) { %>
+          <div class="swiper-slide">
+            <div class="testimonial-card reveal">
+              <div class="testimonial-stars">
+                <% for (var i = 0; i < t.rating; i++) { %>
+                  <i class="fas fa-star"></i>
+                <% } %>
+              </div>
+              <p class="testimonial-content"><%= t.content %></p>
+              <div class="testimonial-author">
+                <div class="testimonial-avatar">
+                  <% if (t.avatar) { %>
+                    <img src="<%= t.avatar %>" alt="<%= t.name %>">
+                  <% } else { %>
+                    <div class="avatar-placeholder"><%= t.name.charAt(0) %></div>
+                  <% } %>
+                </div>
+                <div>
+                  <strong><%= t.name %></strong>
+                  <span><%= t.role %><%= t.company ? ', ' + t.company : '' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- Blog -->
+<% if (blogPosts && blogPosts.length > 0) { %>
+<section class="section blog-section" id="latestBlog">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Blog</span>
+      <h2 class="section-title reveal">Latest Insights</h2>
+    </div>
+    <div class="blog-grid">
+      <% blogPosts.forEach(function(post) { %>
+        <a href="/blog/<%= post.slug %>" class="blog-card reveal">
+          <div class="blog-card-image">
+            <div class="card-image-placeholder">
+              <i class="fas fa-newspaper"></i>
+            </div>
+          </div>
+          <div class="blog-card-content">
+            <span class="blog-card-category"><%= post.category %></span>
+            <h3><%= post.title %></h3>
+            <p><%= post.excerpt.substring(0, 100) %>...</p>
+            <span class="blog-card-date"><%= new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %></span>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+    <div class="section-cta reveal">
+      <a href="/blog" class="btn-primary">Read More <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+<% } %>

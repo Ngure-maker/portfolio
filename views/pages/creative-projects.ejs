@@ -1,0 +1,77 @@
+<section class="page-header">
+  <div class="page-header-bg">
+    <% if (settings && settings.creative_bg_media) { %>
+      <% if (settings.creative_bg_media.match(/\.(mp4|webm)$/i)) { %>
+        <video class="page-header-bg-media" src="<%= settings.creative_bg_media %>" autoplay muted loop playsinline></video>
+      <% } else { %>
+        <img class="page-header-bg-media" src="<%= settings.creative_bg_media %>" alt="">
+      <% } %>
+      <div class="page-header-bg-overlay"></div>
+    <% } %>
+    <div class="glow glow-red" style="top: -20%; left: -10%;"></div>
+    <div class="glow glow-red" style="bottom: -20%; right: -10%;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">Portfolio</span>
+    <h1 class="reveal">Creative Projects</h1>
+    <p class="reveal">A showcase of visual stories and cinematic work.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="category-filter reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="Cinematography">Cinematography</button>
+      <button class="filter-btn" data-filter="Videography">Videography</button>
+      <button class="filter-btn" data-filter="Photography">Photography</button>
+      <button class="filter-btn" data-filter="Editing">Editing</button>
+      <button class="filter-btn" data-filter="Commercial">Commercial</button>
+      <button class="filter-btn" data-filter="Events">Events</button>
+      <button class="filter-btn" data-filter="Corporate">Corporate</button>
+      <button class="filter-btn" data-filter="Wedding">Wedding</button>
+      <button class="filter-btn" data-filter="Drone">Drone</button>
+    </div>
+
+    <% if (projects && projects.length > 0) { %>
+      <div class="masonry-grid">
+        <% projects.forEach(function(p, i) { %>
+          <a href="/projects/creative/<%= p.slug %>" class="masonry-item" data-category="<%= p.category %>" style="<%= i % 3 === 0 ? 'min-height: 350px;' : '' %>">
+            <%
+              var thumb = '';
+              var isDirectVideo = false;
+              if (p.heroImage) {
+                thumb = p.heroImage;
+              } else if (p.heroVideo) {
+                var yt = p.heroVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                var gd = p.heroVideo.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (yt) { thumb = 'https://img.youtube.com/vi/' + yt[1] + '/maxresdefault.jpg'; }
+                else if (gd) { thumb = 'https://drive.google.com/thumbnail?id=' + gd[1]; }
+                else if (p.heroVideo.match(/\.(mp4|webm|mov)$/i)) { isDirectVideo = true; }
+              }
+            %>
+            <% if (thumb) { %>
+              <div class="masonry-item-bg" style="background-image: url('<%= thumb %>');"></div>
+            <% } %>
+            <% if (!thumb && isDirectVideo) { %>
+              <video class="masonry-item-video" src="<%= p.heroVideo %>" muted preload="metadata" playsinline></video>
+            <% } %>
+            <div class="masonry-item-inner">
+              <% if (!thumb && !isDirectVideo) { %><i class="fas fa-film"></i><% } %>
+              <h3 style="color: var(--text-primary);"><%= p.title %></h3>
+              <span style="font-size: 0.8rem; color: var(--accent);"><%= p.category %></span>
+              <p style="font-size: 0.85rem;"><%= p.description.substring(0, 80) %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state reveal">
+        <i class="fas fa-film"></i>
+        <h3 style="margin-bottom: 12px;">Portfolio Coming Soon</h3>
+        <p>I'm currently curating my latest creative projects. Check back soon!</p>
+      </div>
+    <% } %>
+  </div>
+</section>

@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SoftwareProject {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String
+  content     String   @default("")
+  heroImage   String   @default("")
+  screenshots String   @default("")
+  techStack   String   @default("")
+  features    String   @default("")
+  githubUrl   String?
+  liveUrl     String?
+  category    String
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CreativeProject {
+  id            Int      @id @default(autoincrement())
+  title         String
+  slug          String   @unique
+  description   String
+  content       String   @default("")
+  category      String
+  heroVideo     String?
+  heroImage     String?
+  gallery       String   @default("")
+  behindScenes  String   @default("")
+  equipment     String   @default("")
+  clientReview  String?
+  clientName    String?
+  clientRole    String?
+  featured      Boolean  @default(false)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  content   String
+  excerpt   String
+  coverImage String
+  category  String
+  tags      String
+  published Boolean  @default(false)
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String?
+  projectType String?
+  budget      String?
+  timeline    String?
+  description String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String
+  content     String   @default("")
+  icon        String
+  category    String
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id     Int    @id @default(autoincrement())
+  name   String
+  icon   String?
+  level  Int
+  category String
+  order  Int    @default(0)
+}
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  company   String?
+  content   String
+  avatar    String?
+  rating    Int      @default(5)
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+}

@@ -1,0 +1,155 @@
+<section class="project-hero" id="projectHero">
+  <% 
+    var heroImages = [];
+    if (project.heroImage) heroImages.push(project.heroImage);
+    if (project.screenshots) {
+      project.screenshots.split(',').forEach(function(s) {
+        var t = s.trim();
+        if (t) heroImages.push(t);
+      });
+    }
+  %>
+  <% if (heroImages.length > 0) { %>
+    <div class="hero-slideshow" id="heroSlideshow">
+      <% heroImages.forEach(function(img, idx) { %>
+        <div class="hero-slide" style="background-image: url('<%= img %>');<%= idx === 0 ? 'opacity:1;' : '' %>"></div>
+      <% }); %>
+      <div class="hero-slideshow-overlay"></div>
+    </div>
+  <% } else { %>
+    <div class="page-header-bg">
+      <div class="glow glow-red" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+      <div class="hero-grid"></div>
+    </div>
+  <% } %>
+  <div class="container">
+    <div class="project-hero-content">
+      <span class="section-label reveal"><%= project.category %></span>
+      <h1 class="reveal"><%= project.title %></h1>
+      <p class="reveal"><%= project.description %></p>
+      <div class="project-meta reveal">
+        <div class="project-meta-item">
+          <h4>Category</h4>
+          <span><%= project.category %></span>
+        </div>
+        <div class="project-meta-item">
+          <h4>Tech Stack</h4>
+          <span><%= project.techStack %></span>
+        </div>
+      </div>
+      <div class="project-links reveal">
+        <% if (project.githubUrl) { %>
+          <a href="<%= project.githubUrl %>" target="_blank" rel="noopener" class="btn-outline"><i class="fab fa-github"></i> View Source</a>
+        <% } %>
+        <% if (project.liveUrl) { %>
+          <a href="<%= project.liveUrl %>" target="_blank" rel="noopener" class="btn-primary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('#heroSlideshow .hero-slide');
+  if (slides.length < 2) return;
+  var current = 0;
+  setInterval(function() {
+    slides[current].style.opacity = '0';
+    current = (current + 1) % slides.length;
+    slides[current].style.opacity = '1';
+  }, 4000);
+})();
+</script>
+
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="content-grid">
+      <div class="reveal-left">
+        <span class="section-label">Overview</span>
+        <h2 class="section-title">Project Details</h2>
+        <div style="color: var(--text-secondary); line-height: 1.8;">
+          <%- project.content %>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <% if (project.heroImage) { %>
+          <div style="width: 100%; aspect-ratio: 16/10; border-radius: var(--radius-lg); overflow: hidden;">
+            <img src="<%= project.heroImage %>" alt="<%= project.title %>" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+        <% } else { %>
+          <div style="width: 100%; aspect-ratio: 16/10; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 3rem;">
+            <i class="fas fa-code"></i>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (project.features) { %>
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Features</span>
+      <h2 class="section-title reveal">Key Features</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+      <% var features = project.features.split('\n'); %>
+      <% features.forEach(function(f) { %>
+        <% if (f.trim()) { %>
+          <div class="reveal" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 24px; display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-check-circle" style="color: var(--accent); flex-shrink: 0;"></i>
+            <span style="color: var(--text-secondary); font-size: 0.9rem;"><%= f.trim() %></span>
+          </div>
+        <% } %>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Technology</span>
+      <h2 class="section-title reveal">Tech Stack</h2>
+    </div>
+    <div class="project-tech-grid reveal">
+      <% var techs = project.techStack ? project.techStack.split(',').map(t => t.trim()) : []; %>
+      <% techs.forEach(function(tech) { %>
+        <span class="project-tech-tag reveal"><%= tech %></span>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<% if (related && related.length > 0) { %>
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Related</span>
+      <h2 class="section-title reveal">More Projects</h2>
+    </div>
+    <div class="featured-grid">
+      <% related.forEach(function(p) { %>
+        <a href="/projects/software/<%= p.slug %>" class="featured-card reveal">
+          <div class="featured-card-image">
+            <% if (p.heroImage) { %>
+              <img src="<%= p.heroImage %>" alt="<%= p.title %>">
+            <% } else { %>
+              <div class="card-image-placeholder"><i class="fas fa-code"></i></div>
+            <% } %>
+            <div class="featured-card-overlay"><span>View <i class="fas fa-arrow-right"></i></span></div>
+          </div>
+          <div class="featured-card-content">
+            <span class="featured-card-category"><%= p.category %></span>
+            <h3><%= p.title %></h3>
+            <p><%= p.description.substring(0, 100) %>...</p>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>

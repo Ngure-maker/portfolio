@@ -1,0 +1,70 @@
+<section class="page-header">
+  <div class="page-header-bg">
+    <div class="glow glow-red" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">Blog</span>
+    <h1 class="reveal">Insights & Stories</h1>
+    <p class="reveal">Thoughts on software engineering, creative production, and everything in between.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="blog-page-grid">
+      <div>
+        <% if (posts && posts.length > 0) { %>
+          <div class="blog-posts-list">
+            <% posts.forEach(function(post) { %>
+              <a href="/blog/<%= post.slug %>" class="blog-post-card reveal">
+                <div class="blog-card-image">
+                  <div class="card-image-placeholder"><i class="fas fa-newspaper"></i></div>
+                </div>
+                <div class="blog-card-content">
+                  <span class="blog-card-category"><%= post.category %></span>
+                  <h3><%= post.title %></h3>
+                  <p><%= post.excerpt.substring(0, 150) %>...</p>
+                  <span class="blog-card-date"><%= new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %></span>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="empty-state reveal">
+            <i class="fas fa-newspaper"></i>
+            <h3 style="margin-bottom: 12px;">No Posts Yet</h3>
+            <p>Blog posts are coming soon. Stay tuned!</p>
+          </div>
+        <% } %>
+      </div>
+      <aside class="blog-sidebar">
+        <div class="sidebar-widget reveal">
+          <h3>Categories</h3>
+          <ul>
+            <% if (categories && categories.length > 0) { %>
+              <% categories.forEach(function(cat) { %>
+                <li>
+                  <a href="/blog/category/<%= cat.category %>" class="<%= activeCategory === cat.category ? 'active' : '' %>">
+                    <%= cat.category %>
+                    <span><%= cat._count.id %></span>
+                  </a>
+                </li>
+              <% }); %>
+            <% } else { %>
+              <li><a href="/blog">All Posts</a></li>
+              <li><a href="#">Categories coming soon</a></li>
+            <% } %>
+          </ul>
+        </div>
+        <div class="sidebar-widget reveal">
+          <h3>About This Blog</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.7;">
+            Sharing knowledge and experiences from both worlds — software engineering and creative production. 
+            Tutorials, case studies, and behind-the-scenes stories.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

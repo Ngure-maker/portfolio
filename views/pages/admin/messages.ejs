@@ -1,0 +1,37 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Messages</h1>
+    </div>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Type</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% if (messages && messages.length > 0) { %>
+            <% messages.forEach(function(m) { %>
+              <tr class="<%= !m.read ? 'admin-row-unread' : '' %>">
+                <td><strong><%= m.name %></strong></td>
+                <td><%= m.email %></td>
+                <td><%= m.projectType || '-' %></td>
+                <td><%= new Date(m.createdAt).toLocaleDateString() %></td>
+                <td><span class="admin-status <%= m.read ? 'read' : 'unread' %>"><%= m.read ? 'Read' : 'New' %></span></td>
+                <td class="admin-actions">
+                  <a href="/admin/messages/<%= m.id %>" class="admin-action-btn" title="View"><i class="fas fa-eye"></i></a>
+                  <form action="/admin/messages/<%= m.id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this message?')">
+                    <button type="submit" class="admin-action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No messages received yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

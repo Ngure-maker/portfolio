@@ -1,0 +1,173 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1><%= project ? 'Edit' : 'New' %> Software Project</h1>
+      <a href="/admin/projects/software" class="admin-btn admin-btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="admin-form">
+      <form action="/admin/projects/software<%= project ? '/' + project.id + '?_method=PUT' : '' %>" method="POST">
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Title *</label>
+            <input type="text" name="title" value="<%= project ? project.title : '' %>" required>
+          </div>
+          <div class="admin-form-group">
+            <label>Category *</label>
+            <input type="text" name="category" value="<%= project ? project.category : '' %>" required placeholder="e.g., Web App, API, Mobile">
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Description *</label>
+          <textarea name="description" rows="3" required><%= project ? project.description : '' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Content (HTML)</label>
+          <textarea name="content" rows="10"><%= project ? project.content : '' %></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label>Hero Image</label>
+          <div class="img-picker">
+            <div class="img-picker-inline">
+              <div class="img-picker-thumb" id="heroThumb">
+                <% if (project && project.heroImage) { %>
+                  <img src="<%= project.heroImage %>" alt="Hero">
+                  <button type="button" class="img-picker-remove" onclick="clearProjectHero()" title="Remove">&times;</button>
+                <% } else { %>
+                  <div class="img-picker-placeholder" style="width:80px;height:80px;border-radius:8px;">
+                    <i class="fas fa-image" style="font-size:1.5rem;"></i>
+                  </div>
+                <% } %>
+              </div>
+              <div class="img-picker-field">
+                <input type="text" name="heroImage" id="heroImageInput" placeholder="/uploads/image.jpg" value="<%= project ? project.heroImage : '' %>" style="width:100%;">
+                <div class="img-picker-actions" style="margin-top:8px;">
+                  <button type="button" class="img-picker-open-btn" onclick="openProjectMediaPicker()"><i class="fas fa-images"></i> Browse Media</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Tech Stack (comma separated)</label>
+            <input type="text" name="techStack" value="<%= project ? project.techStack : '' %>" placeholder="React, Node.js, PostgreSQL">
+          </div>
+          <div class="admin-form-group">
+            <label>Features (one per line)</label>
+            <textarea name="features" rows="4"><%= project ? project.features : '' %></textarea>
+          </div>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>GitHub URL</label>
+            <input type="url" name="githubUrl" value="<%= project ? project.githubUrl : '' %>">
+          </div>
+          <div class="admin-form-group">
+            <label>Live Demo URL</label>
+            <input type="url" name="liveUrl" value="<%= project ? project.liveUrl : '' %>">
+          </div>
+        </div>
+        <div class="admin-form-grid">
+          <div class="admin-form-group">
+            <label>Featured</label>
+            <select name="featured">
+              <option value="true" <%= project && project.featured ? 'selected' : '' %>>Yes</option>
+              <option value="false" <%= !project || !project.featured ? 'selected' : '' %>>No</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Published</label>
+            <select name="published">
+              <option value="true" <%= !project || project.published ? 'selected' : '' %>>Yes</option>
+              <option value="false" <%= project && !project.published ? 'selected' : '' %>>No</option>
+            </select>
+          </div>
+        </div>
+        <div class="admin-form-group">
+          <label>Screenshots URLs (comma separated)</label>
+          <input type="text" name="screenshots" value="<%= project ? project.screenshots : '' %>">
+        </div>
+        <button type="submit" class="admin-btn"><%= project ? 'Update' : 'Create' %> Project</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Media Picker Modal -->
+<div class="media-picker-modal" id="projectMediaPicker">
+  <div class="media-picker-overlay" onclick="closeProjectMediaPicker()"></div>
+  <div class="media-picker-content">
+    <div class="media-picker-header">
+      <h3>Select Hero Image</h3>
+      <button type="button" onclick="closeProjectMediaPicker()">&times;</button>
+    </div>
+    <div class="media-picker-grid">
+      <% if (typeof mediaFiles !== 'undefined' && mediaFiles.length > 0) { %>
+        <% mediaFiles.forEach(function(file) { %>
+          <div class="media-picker-item" data-url="/uploads/<%= file %>" onclick="selectProjectMedia(this)">
+            <img src="/uploads/<%= file %>" alt="<%= file %>">
+            <span><%= file %></span>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="media-picker-empty">
+          <i class="fas fa-images"></i>
+          <p>No media files found. <a href="/admin/media" style="color:var(--accent);">Upload one first</a>.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<style>
+.img-picker-inline {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.img-picker-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+}
+.img-picker-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.img-picker-thumb .img-picker-remove {
+  width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+}
+.img-picker-field {
+  flex: 1;
+}
+</style>
+
+<script>
+function openProjectMediaPicker() {
+  document.getElementById('projectMediaPicker').classList.add('open');
+}
+function closeProjectMediaPicker() {
+  document.getElementById('projectMediaPicker').classList.remove('open');
+}
+function selectProjectMedia(el) {
+  var url = el.getAttribute('data-url');
+  document.getElementById('heroImageInput').value = url;
+  var thumb = document.getElementById('heroThumb');
+  thumb.innerHTML = '<img src="' + url.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" alt="Hero"><button type="button" class="img-picker-remove" onclick="clearProjectHero()" title="Remove">&times;</button>';
+  closeProjectMediaPicker();
+}
+function clearProjectHero() {
+  document.getElementById('heroImageInput').value = '';
+  document.getElementById('heroThumb').innerHTML = '<div class="img-picker-placeholder" style="width:80px;height:80px;border-radius:8px;"><i class="fas fa-image" style="font-size:1.5rem;"></i></div>';
+}
+</script>
+
+<%- include('../../partials/admin-footer') %>

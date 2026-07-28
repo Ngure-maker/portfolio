@@ -1,0 +1,179 @@
+<section class="page-header" id="creativeHero" style="min-height: 80vh; display: flex; align-items: center;">
+  <div class="page-header-bg">
+    <% if (settings && settings.creative_hero_bg) { %>
+      <% var ch = settings.creative_hero_bg; %>
+      <% var chYt = ch.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/); %>
+      <% var chGd = ch.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/); %>
+      <% if (chYt) { %>
+        <div style="position:absolute;inset:0;overflow:hidden;">
+          <iframe src="https://www.youtube.com/embed/<%= chYt[1] %>?autoplay=1&mute=1&loop=1&playlist=<%= chYt[1] %>&controls=0&showinfo=0&modestbranding=1" style="position:absolute;top:50%;left:50%;width:150vw;height:150vh;transform:translate(-50%,-50%);border:none;pointer-events:none;" allow="autoplay;fullscreen"></iframe>
+        </div>
+      <% } else if (chGd) { %>
+        <div style="position:absolute;inset:0;overflow:hidden;">
+          <iframe src="https://drive.google.com/file/d/<%= chGd[1] %>/preview" style="position:absolute;top:50%;left:50%;width:150vw;height:150vh;transform:translate(-50%,-50%);border:none;pointer-events:none;" allow="autoplay;fullscreen"></iframe>
+        </div>
+      <% } else if (ch.match(/\.(mp4|webm|ogg)$/i)) { %>
+        <video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;">
+          <source src="<%= ch %>" type="video/<%= ch.endsWith('.webm') ? 'webm' : ch.endsWith('.ogg') ? 'ogg' : 'mp4' %>">
+        </video>
+      <% } else { %>
+        <div style="position:absolute;inset:0;background:url('<%= ch %>') center/cover no-repeat;"></div>
+      <% } %>
+      <div style="position:absolute;inset:0;background:rgba(10,10,10,0.6);"></div>
+    <% } else { %>
+      <div class="glow glow-red" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+    <% } %>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">Creative Production</span>
+    <h1 class="reveal">Visual Stories<br>That Move You</h1>
+    <p class="reveal">Cinematography, photography, and visual narratives crafted with passion.</p>
+    <div class="hero-buttons" style="justify-content: center; margin-top: 32px;">
+      <a href="#showreel" class="btn-primary reveal"><i class="fas fa-play"></i> Watch Showreel</a>
+      <a href="/projects/creative" class="btn-outline reveal">View Portfolio <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="showreel" style="background: var(--bg-primary);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Showreel</span>
+      <h2 class="section-title reveal">Featured Work</h2>
+    </div>
+    <div class="showreel-container reveal" style="position: relative;">
+      <% if (settings && settings.creative_showreel) { %>
+        <%
+          var sr = settings.creative_showreel;
+          var srYt = sr.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+          var srGd = sr.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+        %>
+        <% if (srYt) { %>
+          <div style="width:100%;aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;">
+            <iframe id="showreelPlayer" src="https://www.youtube.com/embed/<%= srYt[1] %>?autoplay=1&mute=0&controls=1&rel=0" style="width:100%;height:100%;border:none;" allow="autoplay;fullscreen" allowfullscreen></iframe>
+          </div>
+        <% } else if (srGd) { %>
+          <div style="width:100%;aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;">
+            <iframe id="showreelPlayer" src="https://drive.google.com/file/d/<%= srGd[1] %>/preview" style="width:100%;height:100%;border:none;" allow="autoplay;fullscreen" allowfullscreen></iframe>
+          </div>
+        <% } else if (sr.match(/\.(mp4|webm|mov)$/i)) { %>
+          <div style="width:100%;aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;background:#000;">
+            <video id="showreelPlayer" controls style="width:100%;height:100%;object-fit:contain;background:#000;">
+              <source src="<%= sr %>" type="video/<%= sr.match(/\.webm$/i) ? 'webm' : 'mp4' %>">
+            </video>
+          </div>
+        <% } %>
+      <% } else { %>
+        <div style="width: 100%; aspect-ratio: 16/9; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; color: var(--text-muted);">
+          <div style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="fas fa-play" style="color: var(--accent); margin-left: 4px;"></i>
+          </div>
+          <p style="font-size: 1rem;">Set showreel in admin settings</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="creativeCategories">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Categories</span>
+      <h2 class="section-title reveal">What I Create</h2>
+    </div>
+    <div class="services-grid">
+      <a href="/projects/creative/category/Cinematography" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-video"></i></div>
+        <h3>Cinematography</h3>
+        <p>Cinematic footage for films, commercials, documentaries, and music videos with professional lighting and composition.</p>
+      </a>
+      <a href="/projects/creative/category/Videography" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-camera-retro"></i></div>
+        <h3>Videography</h3>
+        <p>Event coverage, corporate videos, and social media content with storytelling at the core.</p>
+      </a>
+      <a href="/projects/creative/category/Photography" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-camera"></i></div>
+        <h3>Photography</h3>
+        <p>Portrait, event, commercial, and editorial photography with professional-grade equipment.</p>
+      </a>
+      <a href="/projects/creative/category/Editing" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-cut"></i></div>
+        <h3>Video Editing</h3>
+        <p>Professional post-production including editing, color grading, sound design, and motion graphics.</p>
+      </a>
+      <a href="/projects/creative/category/Drone" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-helicopter"></i></div>
+        <h3>Drone Videography</h3>
+        <p>Aerial cinematography and photography for stunning landscape and event coverage.</p>
+      </a>
+      <a href="/projects/creative/category/Commercial" class="service-card reveal">
+        <div class="service-card-icon"><i class="fas fa-bullhorn"></i></div>
+        <h3>Commercial Production</h3>
+        <p>High-impact commercial content for brands and businesses.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="creativeProjects">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Latest Work</span>
+      <h2 class="section-title reveal">Recent Projects</h2>
+    </div>
+    <% if (projects && projects.length > 0) { %>
+      <div class="masonry-grid">
+        <% projects.slice(0, 6).forEach(function(p, i) { %>
+          <a href="/projects/creative/<%= p.slug %>" class="masonry-item reveal" data-category="<%= p.category %>" style="<%= i === 0 ? 'min-height: 350px;' : '' %>">
+            <%
+              var thumb = '';
+              var isDirectVideo = false;
+              if (p.heroImage) {
+                thumb = p.heroImage;
+              } else if (p.heroVideo) {
+                var yt = p.heroVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                var gd = p.heroVideo.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (yt) { thumb = 'https://img.youtube.com/vi/' + yt[1] + '/maxresdefault.jpg'; }
+                else if (gd) { thumb = 'https://drive.google.com/thumbnail?id=' + gd[1]; }
+                else if (p.heroVideo.match(/\.(mp4|webm|mov)$/i)) { isDirectVideo = true; }
+              }
+            %>
+            <% if (thumb) { %>
+              <div class="masonry-item-bg" style="background-image: url('<%= thumb %>');"></div>
+            <% } %>
+            <% if (!thumb && isDirectVideo) { %>
+              <video class="masonry-item-video" src="<%= p.heroVideo %>" muted preload="metadata" playsinline></video>
+            <% } %>
+            <div class="masonry-item-inner">
+              <% if (!thumb && !isDirectVideo) { %><i class="fas fa-film"></i><% } %>
+              <h3 style="color: var(--text-primary);"><%= p.title %></h3>
+              <span style="font-size: 0.8rem; color: var(--accent);"><%= p.category %></span>
+              <p style="font-size: 0.85rem;"><%= p.description.substring(0, 80) %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+      <div class="section-cta reveal">
+        <a href="/projects/creative" class="btn-primary">View All Projects <i class="fas fa-arrow-right"></i></a>
+      </div>
+    <% } else { %>
+      <div class="empty-state reveal">
+        <i class="fas fa-film"></i>
+        <p>Creative projects coming soon.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="creativeCTA">
+  <div class="container" style="text-align: center;">
+    <span class="section-label reveal">Let's Create</span>
+    <h2 class="section-title reveal" style="max-width: 700px; margin: 0 auto 1.5rem;">Ready to Tell Your Story?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;" class="reveal">
+      Every project is a new story waiting to be told. Let's make yours unforgettable.
+    </p>
+    <a href="/contact" class="btn-primary reveal">Book a Session <i class="fas fa-arrow-right"></i></a>
+  </div>
+</section>

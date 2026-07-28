@@ -1,0 +1,22 @@
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="flash-message flash-success" id="flashSuccess">
+    <i class="fas fa-check-circle"></i>
+    <span><%= success %></span>
+    <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+  </div>
+<% } %>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="flash-message flash-error" id="flashError">
+    <i class="fas fa-exclamation-circle"></i>
+    <span><%= error %></span>
+    <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+  </div>
+<% } %>
+<script>
+(function() {
+  var msgs = document.querySelectorAll('.flash-message');
+  msgs.forEach(function(msg) {
+    setTimeout(function() { msg.style.opacity = '0'; setTimeout(function() { msg.remove(); }, 300); }, 3500);
+  });
+})();
+</script>

@@ -1,0 +1,157 @@
+<%- include('../../partials/admin-header') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <div>
+        <h1>Media Library</h1>
+        <p style="margin-top:4px;font-size:0.85rem;color:var(--text-muted);">Upload and manage images for your site.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;margin-bottom:32px;">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;margin-bottom:16px;">Upload New File</h3>
+      <form action="/admin/media/upload" method="POST" enctype="multipart/form-data" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <input type="file" name="file" accept="image/*,video/*" required style="flex:1;min-width:200px;padding:10px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+        <button type="submit" class="admin-btn"><i class="fas fa-upload"></i> Upload</button>
+      </form>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:12px;">Accepted: JPG, PNG, GIF, WebP, SVG, MP4, WebM. Max: 50MB</p>
+    </div>
+
+    <% if (files && files.length > 0) { %>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;">
+        <% files.forEach(function(file) { %>
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;">
+            <div style="height:160px;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+              <% if (/\.(mp4|webm)$/i.test(file)) { %>
+                <i class="fas fa-video" style="font-size:2.5rem;color:var(--text-muted);opacity:0.4;"></i>
+              <% } else { %>
+                <img src="/uploads/<%= file %>" alt="<%= file %>" style="width:100%;height:100%;object-fit:cover;">
+              <% } %>
+            </div>
+            <div style="padding:12px;">
+              <p style="font-size:0.75rem;color:var(--text-muted);word-break:break-all;margin-bottom:8px;" id="name-<%= file %>"><%= file %></p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <input type="text" value="/uploads/<%= file %>" readonly style="flex:1;min-width:120px;padding:6px 8px;font-size:0.7rem;background:var(--bg-primary);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);" onclick="this.select()">
+                <button class="admin-action-btn" title="Rename" onclick="toggleRename('<%= file %>')" style="cursor:pointer;"><i class="fas fa-pen"></i></button>
+                <button class="admin-action-btn" title="Resize" onclick="toggleResize('<%= file %>')" style="cursor:pointer;"><i class="fas fa-expand"></i></button>
+                <% if (!/\.(mp4|webm)$/i.test(file)) { %>
+                <button class="admin-action-btn" title="Crop" onclick="openCrop('<%= file %>')" style="cursor:pointer;"><i class="fas fa-crop"></i></button>
+                <% } %>
+                <form action="/admin/media/<%= file %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this file?')" style="display:inline;">
+                  <button type="submit" class="admin-action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+              <form action="/admin/media/<%= file %>?_method=PUT" method="POST" id="rename-<%= file %>" style="display:none;margin-top:8px;">
+                <div style="display:flex;gap:8px;">
+                  <input type="text" name="name" value="<%= file %>" required style="flex:1;padding:6px 8px;font-size:0.75rem;background:var(--bg-primary);border:1px solid var(--accent);border-radius:4px;color:var(--text-primary);">
+                  <button type="submit" class="admin-action-btn" title="Save" style="cursor:pointer;background:var(--accent);color:var(--bg-primary);"><i class="fas fa-check"></i></button>
+                  <button type="button" class="admin-action-btn delete" title="Cancel" onclick="toggleRename('<%= file %>')" style="cursor:pointer;"><i class="fas fa-times"></i></button>
+                </div>
+              </form>
+              <form action="/admin/media/<%= file %>/resize" method="POST" id="resize-<%= file %>" style="display:none;margin-top:8px;">
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <input type="number" name="width" placeholder="Width" min="1" max="10000" required style="width:80px;padding:6px 8px;font-size:0.75rem;background:var(--bg-primary);border:1px solid var(--accent);border-radius:4px;color:var(--text-primary);">
+                  <span style="color:var(--text-muted);font-size:0.75rem;">x</span>
+                  <input type="number" name="height" placeholder="Height" min="1" max="10000" required style="width:80px;padding:6px 8px;font-size:0.75rem;background:var(--bg-primary);border:1px solid var(--accent);border-radius:4px;color:var(--text-primary);">
+                  <button type="submit" class="admin-action-btn" title="Apply" style="cursor:pointer;background:var(--accent);color:var(--bg-primary);"><i class="fas fa-check"></i></button>
+                  <button type="button" class="admin-action-btn delete" title="Cancel" onclick="toggleResize('<%= file %>')" style="cursor:pointer;"><i class="fas fa-times"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+        <i class="fas fa-images" style="font-size:3rem;opacity:0.3;margin-bottom:16px;display:block;"></i>
+        <p>No media files uploaded yet.</p>
+      </div>
+    <% } %>
+  </div>
+</div>
+<div id="cropModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;flex-direction:column;padding:40px;">
+  <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:24px;max-width:90vw;max-height:90vh;width:100%;display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;">Crop Image</h3>
+      <button onclick="closeCrop()" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="cropContainer" style="flex:1;min-height:400px;background:var(--bg-primary);border-radius:var(--radius-sm);overflow:hidden;">
+      <img id="cropImage" src="" alt="Crop preview" style="max-width:100%;">
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;justify-content:flex-end;">
+      <button onclick="closeCrop()" class="admin-btn-outline" style="padding:10px 24px;">Cancel</button>
+      <button onclick="applyCrop()" class="admin-btn" style="padding:10px 24px;"><i class="fas fa-check"></i> Apply Crop</button>
+    </div>
+    <form id="cropForm" method="POST" style="display:none;">
+      <input type="hidden" name="x" id="cropX">
+      <input type="hidden" name="y" id="cropY">
+      <input type="hidden" name="w" id="cropW">
+      <input type="hidden" name="h" id="cropH">
+    </form>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script>
+var cropper = null;
+var currentFile = '';
+
+function openCrop(file) {
+  currentFile = file;
+  var modal = document.getElementById('cropModal');
+  var img = document.getElementById('cropImage');
+  modal.style.display = 'flex';
+  img.src = '/uploads/' + file + '?t=' + Date.now();
+  img.onload = function() {
+    if (cropper) cropper.destroy();
+    cropper = new Cropper(img, {
+      aspectRatio: 1,
+      viewMode: 1,
+      autoCropArea: 1,
+      guides: true,
+      background: false,
+    });
+  };
+}
+
+function closeCrop() {
+  document.getElementById('cropModal').style.display = 'none';
+  if (cropper) { cropper.destroy(); cropper = null; }
+}
+
+function applyCrop() {
+  if (!cropper) return;
+  var data = cropper.getData(true);
+  document.getElementById('cropX').value = Math.round(data.x);
+  document.getElementById('cropY').value = Math.round(data.y);
+  document.getElementById('cropW').value = Math.round(data.width);
+  document.getElementById('cropH').value = Math.round(data.height);
+  var form = document.getElementById('cropForm');
+  form.action = '/admin/media/' + currentFile + '/crop';
+  form.submit();
+}
+
+function toggleRename(file) {
+  var form = document.getElementById('rename-' + file);
+  var label = document.getElementById('name-' + file);
+  if (form.style.display === 'none' || form.style.display === '') {
+    form.style.display = 'block';
+    if (label) label.style.display = 'none';
+  } else {
+    form.style.display = 'none';
+    if (label) label.style.display = 'block';
+  }
+}
+function toggleResize(file) {
+  var form = document.getElementById('resize-' + file);
+  var label = document.getElementById('name-' + file);
+  if (form.style.display === 'none' || form.style.display === '') {
+    form.style.display = 'block';
+    if (label) label.style.display = 'none';
+  } else {
+    form.style.display = 'none';
+    if (label) label.style.display = 'block';
+  }
+}
+</script>
+<%- include('../../partials/admin-footer') %>

@@ -1,0 +1,39 @@
+<%- include('../../partials/admin-header') %>
+<div class="admin-main">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Creative Projects</h1>
+      <a href="/admin/projects/creative/new" class="admin-btn"><i class="fas fa-plus"></i> New Project</a>
+    </div>
+    <div class="admin-table">
+      <table>
+        <thead>
+          <tr><th>Title</th><th>Category</th><th>Featured</th><th>Published</th><th>Date</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% if (projects && projects.length > 0) { %>
+            <% projects.forEach(function(p) { %>
+              <tr>
+                <td><strong><%= p.title %></strong></td>
+                <td><%= p.category %></td>
+                <td><%= p.featured ? 'Yes' : 'No' %></td>
+                <td><%= p.published ? 'Yes' : 'No' %></td>
+                <td><%= new Date(p.createdAt).toLocaleDateString() %></td>
+                <td class="admin-actions">
+                  <a href="/projects/creative/<%= p.slug %>" class="admin-action-btn" target="_blank" title="View"><i class="fas fa-eye"></i></a>
+                  <a href="/admin/projects/creative/<%= p.id %>/edit" class="admin-action-btn" title="Edit"><i class="fas fa-edit"></i></a>
+                  <form action="/admin/projects/creative/<%= p.id %>?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Delete this project?')">
+                    <button type="submit" class="admin-action-btn delete" title="Delete"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No projects yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('../../partials/admin-footer') %>

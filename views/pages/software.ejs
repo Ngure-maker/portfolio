@@ -1,0 +1,178 @@
+<section class="page-header" id="softwareHero">
+  <div class="page-header-bg">
+    <% if (settings && settings.software_bg_media) { %>
+      <% if (settings.software_bg_media.match(/\.(mp4|webm)$/i)) { %>
+        <video class="page-header-bg-media" src="<%= settings.software_bg_media %>" autoplay muted loop playsinline></video>
+      <% } else { %>
+        <img class="page-header-bg-media" src="<%= settings.software_bg_media %>" alt="">
+      <% } %>
+      <div class="page-header-bg-overlay"></div>
+    <% } %>
+    <div class="glow glow-red" style="top: -30%; right: -10%;"></div>
+    <div class="glow glow-white" style="bottom: -20%; left: -10%; opacity: 0.05;"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <span class="section-label reveal">Software Engineering</span>
+    <h1 class="reveal">Building the Future<br>One Line at a Time</h1>
+    <p class="reveal">Full-stack development with modern architectures, clean code, and scalable solutions.</p>
+    <div class="hero-buttons" style="justify-content: center; margin-top: 32px;">
+      <a href="/projects/software" class="btn-primary reveal">View Projects <i class="fas fa-arrow-right"></i></a>
+      <a href="/contact" class="btn-outline reveal">Hire Me <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="techStack">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Technology Stack</span>
+      <h2 class="section-title reveal">Languages & Frameworks</h2>
+    </div>
+    <div class="skills-grid" style="margin-top: 40px;">
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Java <i class="fab fa-java" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 95%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>JavaScript <i class="fab fa-js" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 95%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>TypeScript <i class="fas fa-code" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>PHP <i class="fab fa-php" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>80%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Python <i class="fab fa-python" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>85%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 85%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>C# <i class="fas fa-code" style="margin-left: 8px; color: var(--accent);"></i></h4>
+          <span>75%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 75%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="frameworks">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Frameworks & Tools</span>
+      <h2 class="section-title reveal">What I Build With</h2>
+    </div>
+    <div class="skills-grid" style="margin-top: 40px;">
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Spring Boot</h4>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Node.js / Express</h4>
+          <span>95%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 95%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Laravel</h4>
+          <span>80%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>React / Next.js</h4>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>Flutter</h4>
+          <span>75%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 75%"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-item-header">
+          <h4>PostgreSQL / MySQL</h4>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-secondary);" id="softwareProjects">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label reveal">Recent Work</span>
+      <h2 class="section-title reveal">Software Projects</h2>
+    </div>
+    <% if (projects && projects.length > 0) { %>
+      <div class="featured-grid">
+        <% projects.forEach(function(project) { %>
+          <a href="/projects/software/<%= project.slug %>" class="featured-card reveal">
+            <div class="featured-card-image">
+              <% if (project.heroImage) { %>
+                <img src="<%= project.heroImage %>" alt="<%= project.title %>">
+              <% } else { %>
+                <div class="card-image-placeholder"><i class="fas fa-code"></i></div>
+              <% } %>
+              <div class="featured-card-overlay">
+                <span>View Project <i class="fas fa-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="featured-card-content">
+              <span class="featured-card-category"><%= project.category %></span>
+              <h3><%= project.title %></h3>
+              <p><%= project.description.substring(0, 120) %>...</p>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state reveal">
+        <i class="fas fa-code"></i>
+        <p>Projects coming soon. Check back later.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="section" id="softwareCTA">
+  <div class="container" style="text-align: center;">
+    <span class="section-label reveal">Let's Build</span>
+    <h2 class="section-title reveal" style="max-width: 700px; margin: 0 auto 1.5rem;">Have a Project in Mind?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;" class="reveal">
+      From concept to deployment, let's create something exceptional together.
+    </p>
+    <a href="/contact" class="btn-primary reveal">Start Your Project <i class="fas fa-arrow-right"></i></a>
+  </div>
+</section>

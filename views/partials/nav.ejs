@@ -1,0 +1,38 @@
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-logo" aria-label="Ngure Home">
+      <span class="logo-text">Ngure</span>
+      <span class="logo-dot"></span>
+    </a>
+    <div class="navbar-menu" id="navbarMenu">
+      <ul class="navbar-links">
+        <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
+        <li><a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a></li>
+        <li><a href="/services" class="<%= currentPath === '/services' ? 'active' : '' %>">Services</a></li>
+        <li class="dropdown">
+          <a href="/software" class="<%= currentPath.startsWith('/software') || currentPath.startsWith('/projects/software') ? 'active' : '' %>">Software <i class="fas fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="/software">Overview</a></li>
+            <li><a href="/projects/software">Projects</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="/creative" class="<%= currentPath.startsWith('/creative') || currentPath.startsWith('/projects/creative') ? 'active' : '' %>">Creative <i class="fas fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="/creative">Overview</a></li>
+            <li><a href="/projects/creative">Portfolio</a></li>
+          </ul>
+        </li>
+        <li><a href="/studio" class="<%= currentPath === '/studio' ? 'active' : '' %>">Studio</a></li>
+        <li><a href="/blog" class="<%= currentPath === '/blog' || currentPath.startsWith('/blog/') ? 'active' : '' %>">Blog</a></li>
+        <li><a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Contact</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <a href="/contact" class="btn-hire">Hire Me</a>
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

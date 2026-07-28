@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Admin' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/utilities.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    .admin-flash { position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 14px 24px; border-radius: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); max-width: 400px; animation: slideInRight 0.3s ease; }
+    .admin-flash-success { background: #0a3622; border: 1px solid #1a7d36; color: #8bdfa6; }
+    .admin-flash-error { background: #36140a; border: 1px solid #7d1a1a; color: #df8b8b; }
+    .admin-flash-close { margin-left: auto; font-size: 1.2rem; cursor: pointer; opacity: 0.7; background: none; border: none; color: inherit; }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  </style>
+</head>
+<body>
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="admin-flash admin-flash-success" id="adminFlashSuccess">
+    <i class="fas fa-check-circle"></i><span><%= success %></span>
+    <button class="admin-flash-close" onclick="this.parentElement.remove()">&times;</button>
+  </div>
+<% } %>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="admin-flash admin-flash-error" id="adminFlashError">
+    <i class="fas fa-exclamation-circle"></i><span><%= error %></span>
+    <button class="admin-flash-close" onclick="this.parentElement.remove()">&times;</button>
+  </div>
+<% } %>
+<script>
+(function(){ var m = document.querySelectorAll('.admin-flash'); m.forEach(function(msg){ setTimeout(function(){ msg.style.opacity='0'; setTimeout(function(){ msg.remove(); },300); }, 3500); }); })();
+</script>
+<nav class="admin-navbar">
+  <div class="admin-navbar-inner">
+    <a href="/admin" class="admin-logo">Ngure<span class="logo-dot"></span> <span class="admin-logo-badge">Admin</span></a>
+    <div class="admin-nav-links">
+      <a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>"><i class="fas fa-chart-bar"></i> Dashboard</a>
+      <a href="/admin/projects/software" class="<%= currentPath.startsWith('/admin/projects/software') ? 'active' : '' %>"><i class="fas fa-code"></i> Software</a>
+      <a href="/admin/projects/creative" class="<%= currentPath.startsWith('/admin/projects/creative') ? 'active' : '' %>"><i class="fas fa-film"></i> Creative</a>
+      <a href="/admin/blog" class="<%= currentPath.startsWith('/admin/blog') ? 'active' : '' %>"><i class="fas fa-newspaper"></i> Blog</a>
+      <a href="/admin/messages" class="<%= currentPath.startsWith('/admin/messages') ? 'active' : '' %>"><i class="fas fa-envelope"></i> Messages</a>
+      <a href="/admin/testimonials"><i class="fas fa-star"></i> Testimonials</a>
+      <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
+      <a href="/admin/skills"><i class="fas fa-tools"></i> Skills</a>
+      <a href="/admin/media"><i class="fas fa-images"></i> Media</a>
+      <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
+    </div>
+    <div class="admin-nav-actions">
+      <a href="/" class="admin-nav-btn" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
+      <a href="/auth/logout" class="admin-nav-btn logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </div>
+</nav>
