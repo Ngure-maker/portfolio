@@ -4,10 +4,11 @@
   "description": "Premium personal portfolio - Software Engineer & Visual Storyteller",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "npx prisma generate && npx prisma migrate deploy && node server.js",
     "dev": "nodemon server.js",
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate deploy",
     "db:seed": "node prisma/seed.js",
     "build": "node scripts/build.js"
   },
